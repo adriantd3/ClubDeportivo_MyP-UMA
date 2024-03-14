@@ -13,6 +13,8 @@ public class ClubDeportivo {
 	}
 
 	public ClubDeportivo(String nombre, int n) throws ClubException {
+		/* NOTA: El atributo 'ngrupos', se inicializa a 0 por defecto */
+
 		if (n <= 0) {
 			throw new ClubException("ERROR: el club no puede crearse con un número de grupos 0 o negativo");
 		}
@@ -44,8 +46,14 @@ public class ClubDeportivo {
 	}
 
 	public void anyadirActividad(Grupo g) throws ClubException {
+		/* ERROR: Dara error al añadir un grupo cuando tengamos ya la cantidad
+		maxima de grupos en el club deportivo, hay que controlarlo con una excepcion */
+
 		if (g==null){ // ADDME: anaydido para comprobar los grupos nulos
 			throw new ClubException("ERROR: el grupo es nulo");
+		}
+		if (ngrupos == this.grupos.length){ // Añadida para comprobar que el cupo de grupos no este lleno
+			throw new ClubException("ERROR: el numero maximo de grupos para el club ya se ha alcanzado");
 		}
 		int pos = buscar(g);
 		if (pos == -1) { // El grupo es nuevo
