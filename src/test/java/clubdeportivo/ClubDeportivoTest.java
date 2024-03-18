@@ -25,6 +25,14 @@ public class ClubDeportivoTest {
 
     }
 
+    @Test
+    @DisplayName("Prueba que no se lance una excepcion al crear un constructor pasansole solo el nombre")
+    public void ClubDeportivo_PasoNombre_NoLanzaExcepcion(){
+        String nombre = "UMA";
+        assertDoesNotThrow(()->{new ClubDeportivo(nombre);});
+
+    }
+
 
     @Test
     @DisplayName("Prueba que lance una excepcion al añadir un nuevo grupo nulo")
@@ -44,18 +52,16 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    @DisplayName("Probamos que no lance una excepcion al añadir un grupo no nulo")
-    public void AnyadirActividad_GrupoNoNulo_NoLanzaExcepcion(){
-
+    @DisplayName("Prueba que no se lance una excepcion al añadir correctamente un grupo con un array de Strings")
+    public void AnyadirActividad_ArrayStringCorrecto_NoLanzaExcepcion(){
         try {
             // Arrange
-            ClubDeportivo club = new ClubDeportivo("UMA",1);
-            Grupo zumba = new Grupo("11AB","Zumba",10,5,25.0);
+            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            String [] grupo = {"756B","Comba","20","12","30.0"};
 
             // Assert
-            assertDoesNotThrow(()->{ club.anyadirActividad(zumba);});
-
-        } catch (ClubException e){
+            assertDoesNotThrow(()->{club.anyadirActividad(grupo);});
+        }catch (ClubException e){
 
         }
     }
@@ -176,6 +182,56 @@ public class ClubDeportivoTest {
     }
 
     @Test
+    @DisplayName("Prueba que lance una excepcion al intentar matricular cuando hay mas personas que plazas libres")
+    public void Matricular_MasPersonasQuePlazas_LanzaExcepcion(){
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            String actividad = "Gimnasio";
+            Grupo gimnasio = new Grupo("11AB",actividad,8,6,100.0);
+            club.anyadirActividad(gimnasio);
+
+            // Assert
+            assertThrows(ClubException.class, ()->{
+                club.matricular(actividad,10);
+            });
+
+        }catch (ClubException e){
+
+        }
+    }
+
+    @Test
+    @DisplayName("Prueba que se matriculen correctamente un grupo de personas a una determinada actividad")
+    public void Matricular_GrupoPersonas_GruposActualizasNumeroPlazasLibres(){
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            String actividad = "Gimnasio";
+            Grupo gimnasio1 = new Grupo("11AB",actividad,8,6,100.0);
+            Grupo gimnasio2 = new Grupo("22CD",actividad,10,5,20.0);
+            club.anyadirActividad(gimnasio1);
+            club.anyadirActividad(gimnasio2);
+
+            // Act
+            club.matricular(actividad, 5);
+
+            int plazasLibresGimnasio1_Esperadas = 0;
+            int plazasLibresGimnasio2_Esperadas = 2;
+
+            int plazasLibresGimnasio1 = gimnasio1.getPlazas()-gimnasio1.getMatriculados();
+            int plazasLibresGimnasio2 = gimnasio2.getPlazas()- gimnasio2.getMatriculados();
+
+            // Assert
+            assertEquals(plazasLibresGimnasio1_Esperadas,plazasLibresGimnasio1);
+            assertEquals(plazasLibresGimnasio2_Esperadas, plazasLibresGimnasio2);
+
+        }catch (ClubException e){
+
+        }
+    }
+
+    @Test
     @DisplayName("Prueba que los ingresos sean correctos")
     public void Ingresos_ClubDeportivo_DevuelveCantidadCorrecta(){
         try {
@@ -201,7 +257,7 @@ public class ClubDeportivoTest {
 
     @Test
     @DisplayName("Prueba que la representacion del objeto sea correcta")
-    public void ToString_Metodo_DevuelveRepresentacionCorrecta(){
+    public void ToString_ClubConGrupos_DevuelveRepresentacionCorrecta(){
         try {
             // Arrange
             ClubDeportivo club = new ClubDeportivo("UMA",2);
@@ -226,6 +282,23 @@ public class ClubDeportivoTest {
         }
     }
 
+    @Test
+    @DisplayName("Prueba que la representacion del grupo vacio sea la correcta")
+    public void ToString_ClubSinGrupos_DevuelveRepresentacionCorrecta(){
+        try {
+            // Arrange
+            String nombre = "UMA";
+            ClubDeportivo club = new ClubDeportivo(nombre,2);
+            String representacion_esperada =  nombre + " --> [  ]";
 
+            // Act
+            String representacion_obtenida = club.toString();
 
+            // Assert
+            assertEquals(representacion_esperada, representacion_obtenida);
+        }catch (ClubException e){
+
+        }
+    }
+    
 }
