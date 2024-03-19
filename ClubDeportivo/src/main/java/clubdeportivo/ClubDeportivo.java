@@ -36,6 +36,9 @@ public class ClubDeportivo {
 	}
 
 	public void anyadirActividad(String[] datos) throws ClubException {
+		if(ngrupos == grupos.length){
+			throw new ClubException("ERROR: No hay espacio para más grupos");
+		}
 		if (datos[0] ==null || datos[1] == null){
 			throw new ClubException("ERROR: el codigo o el nombre del nulo es nulo");
 		}
