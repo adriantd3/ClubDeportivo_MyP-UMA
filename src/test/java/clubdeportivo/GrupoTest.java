@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GrupoTest {
 
@@ -150,23 +149,97 @@ public class GrupoTest {
     }
 
     @Test
-    public void ToString_ParametrosEnRango_ReturnsCadenaCorrecta(){
+    public void ToString_ParametrosEnRango_ReturnsCadenaCorrecta() {
         String codigo = "456B";
         String actividad = "Pilates";
         int nplazas = 8;
         int matriculados = 5;
         double tarifa = 50.0;
 
-        String cadenaRes =  "("+ codigo + " - "+actividad+" - " + tarifa + " euros "+ "- P:" + nplazas +" - M:" +matriculados+")";
+        String cadenaRes = "(" + codigo + " - " + actividad + " - " + tarifa + " euros " + "- P:" + nplazas + " - M:" + matriculados + ")";
 
         Grupo grupo;
-        try{
-            grupo = new Grupo("456B", "Pilates", 15, matriculados, 50.0);
+        try {
+            grupo = new Grupo(codigo,actividad,nplazas,matriculados,tarifa);
 
-            assertEquals(cadenaRes,grupo.toString());
-        }catch (ClubException e){
+            assertEquals(cadenaRes, grupo.toString());
+        } catch (ClubException e) {
 
         }
     }
-    
+
+    @Test
+    public void Equals_ObjetoNulo_ReturnsFalse() {
+        try {
+            Grupo grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
+            Grupo grupoNull = null;
+
+            assertFalse(grupo.equals(grupoNull));
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "678H,Pilates",
+            "456B,Futbol"
+    })
+    public void Equals_DistintasClaves_ReturnsFalse(String codigo, String actividad) {
+        try {
+            Grupo grupoTest = new Grupo(codigo, actividad, 15, 10, 50.0);
+            Grupo grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
+
+            assertFalse(grupo.equals(grupoTest));
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void Equals_MismasClaves_ReturnsTrue() {
+        String codigo = "456B";
+        String actividad = "Pilates";
+
+        try {
+            Grupo grupoTest = new Grupo(codigo, actividad, 15, 10, 50.0);
+            Grupo grupo = new Grupo(codigo, actividad, 15, 10, 50.0);
+
+            assertTrue(grupo.equals(grupoTest));
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+            "678H,Pilates",
+            "456B,Futbol"
+    })
+    public void HashCode_DistintasClaves_ReturnsValoresDistintos(String codigo, String actividad) {
+        try {
+            Grupo grupoTest = new Grupo(codigo, actividad, 15, 10, 50.0);
+            Grupo grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
+
+            assertNotEquals(grupo.hashCode(), grupoTest.hashCode());
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void HashCode_MismasClaves_ReturnsMismosValores() {
+        String codigo = "456B";
+        String actividad = "Pilates";
+
+        try {
+            Grupo grupoTest = new Grupo(codigo, actividad, 15, 10, 50.0);
+            Grupo grupo = new Grupo(codigo, actividad, 15, 10, 50.0);
+
+            assertEquals(grupo.hashCode(), grupoTest.hashCode());
+        } catch (ClubException e) {
+
+        }
+    }
+
 }
