@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GrupoTest {
 
+    @ParameterizedTest
     @CsvSource({
             ",Pilates,8,5,50.0",
             "4568,,8,5,50.0"
