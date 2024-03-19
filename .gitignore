@@ -4,6 +4,6 @@
 # Maven
 target/
 
-# htmlReport
+#JaCoCO
 htmlReport/
 

@@ -8,6 +8,9 @@ public class Grupo {
 	private double tarifa;
 	
 	public Grupo(String codigo, String actividad, int nplazas,  int matriculados, double tarifa) throws ClubException {
+		if (codigo == null || actividad == null){
+			throw new ClubException("ERROR: Los strings no pueden ser vacíos");
+		}
 		if (nplazas<=0 || matriculados<0 || tarifa <=0) {
 			throw new ClubException("ERROR: los datos numéricos no pueden ser menores o iguales que 0.");
 		}
