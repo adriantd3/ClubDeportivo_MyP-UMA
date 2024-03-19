@@ -13,88 +13,109 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ClubDeportivoTest {
 
 
-    @DisplayName("Prueba que lance una excepcion al crear un club con un numero 0 o negativo de grupos")
     @ParameterizedTest
     @CsvSource({
             "UMA,0",
             "1Ma,-1",
     })
-    public void ClubDeportivo_NumeroNegativoGrupos_LanzaExcepcion(String nombre, int numero_grupos){
+    public void ClubDeportivo_NumeroNegativoGrupos_LanzaExcepcion(String nombre, int numero_grupos) {
 
-            assertThrows(ClubException.class,()->{ new ClubDeportivo(nombre,numero_grupos);});
+        assertThrows(ClubException.class, () -> {
+            new ClubDeportivo(nombre, numero_grupos);
+        });
 
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al crear un club con nombre nulo")
-    public void ClubDeportivo_NombreNulo_LanzaExcepcion(){
-        assertThrows(ClubException.class, ()->{new ClubDeportivo(null);});
+    public void ClubDeportivo_NombreNulo_LanzaExcepcion() {
+        assertThrows(ClubException.class, () -> {
+            new ClubDeportivo(null);
+        });
     }
 
     @Test
-    @DisplayName("Prueba que no se lance una excepcion al crear un constructor pasansole solo el nombre")
-    public void ClubDeportivo_PasoNombre_NoLanzaExcepcion(){
+    public void ClubDeportivo_PasoNombre_NoLanzaExcepcion() {
         String nombre = "UMA";
-        assertDoesNotThrow(()->{new ClubDeportivo(nombre);});
+        assertDoesNotThrow(() -> {
+            new ClubDeportivo(nombre);
+        });
 
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al añadir un nuevo grupo nulo")
-    public void AnyadirActividad_GrupoNulo_LanzaExcepcion(){
+    public void AnyadirActividad_GrupoNulo_LanzaExcepcion() {
 
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",1);
+            ClubDeportivo club = new ClubDeportivo("UMA", 1);
             Grupo zumba = null;
 
-            assertThrows(ClubException.class, ()->{ club.anyadirActividad(zumba);});
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(zumba);
+            });
 
-        } catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que no se lance una excepcion al añadir correctamente un grupo con un array de Strings")
-    public void AnyadirActividad_ArrayStringCorrecto_NoLanzaExcepcion(){
+    public void AnyadirActividad_ArrayStringCorrecto_NoLanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
-            String [] grupo = {"756B","Comba","20","12","30.0"};
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            String[] grupo = {"756B", "Comba", "20", "12", "30.0"};
 
-            assertDoesNotThrow(()->{club.anyadirActividad(grupo);});
-        }catch (ClubException e){
+            assertDoesNotThrow(() -> {
+                club.anyadirActividad(grupo);
+            });
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al intentar añadir un nuevo grupo al club " +
-            "cuando ya este completa la capacidad maxima de dicho club")
-    public void AnyadirActividad_CapacidadClubCompleta_LanzaExcepcion(){
+    public void AnyadirActividadGrupo_CapacidadClubCompleta_LanzaExcepcion() {
         try {
             int capacidad = 1;
-            ClubDeportivo club = new ClubDeportivo("UMA",capacidad);
-            Grupo zumba = new Grupo("11AB","Zumba",10,5,25.0);
+            ClubDeportivo club = new ClubDeportivo("UMA", capacidad);
+            Grupo zumba = new Grupo("11AB", "Zumba", 10, 5, 25.0);
             club.anyadirActividad(zumba);
-            Grupo gimnasio = new Grupo("22XX","Gimnasio",20,12,30.0);
+            Grupo gimnasio = new Grupo("22XX", "Gimnasio", 20, 12, 30.0);
 
-            assertThrows(ClubException.class, ()-> {
+            assertThrows(ClubException.class, () -> {
                 club.anyadirActividad(gimnasio);
             });
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que se actualicen las plazas de un grupo ya existente en el club")
-    public void AnyadirActividad_GrupoExistente_CambiaNumeroPlazas(){
+    public void AnyadirActividadString_CapacidadClubCompleta_LanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
-            Grupo zumba = new Grupo("11AB","Zumba",10,5,25.0);
+            int capacidad = 1;
+            ClubDeportivo club = new ClubDeportivo("UMA", capacidad);
+            Grupo zumba = new Grupo("11AB", "Zumba", 10, 5, 25.0);
             club.anyadirActividad(zumba);
-            Grupo zumba2 = new Grupo("11AB","Zumba",20,5,25.0);
+
+            String[] datos = new String[]{"223B", "Baloncesto", "10", "5", "50.0"};
+
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(datos);
+            });
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void AnyadirActividad_GrupoExistente_CambiaNumeroPlazas() {
+        try {
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            Grupo zumba = new Grupo("11AB", "Zumba", 10, 5, 25.0);
+            club.anyadirActividad(zumba);
+            Grupo zumba2 = new Grupo("11AB", "Zumba", 20, 5, 25.0);
             int plazas_esperadas = 20;
 
             club.anyadirActividad(zumba2);
@@ -102,13 +123,12 @@ public class ClubDeportivoTest {
 
             assertEquals(plazas_esperadas, plazas_devueltas);
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @ParameterizedTest
-    @DisplayName("Prueba que se lance una excepcion al añadir grupos con parametros incorrectos")
     @CsvSource({
             "123A,Kizomba,True,-10,25.0",
             "22HG,Zumba,10,False,-25.0",
@@ -119,118 +139,111 @@ public class ClubDeportivoTest {
     })
     public void AnyadirActividad_GrupoValoresIncorrectos_LanzaExcepcion(String codigo, String actividad,
                                                                         String nplazas, String matriculados,
-                                                                        String tarifa){
+                                                                        String tarifa) {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String[] datos = {codigo, actividad, nplazas, matriculados, tarifa};
 
-           assertThrows(ClubException.class, ()->{
+            assertThrows(ClubException.class, () -> {
                 club.anyadirActividad(datos);
-           });
+            });
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que se lance una excepcion al añadir grupos con parametros nulos")
-    public void AnyadirActividad_GrupoValoresNulos_LanzaExcepcion(){
+    public void AnyadirActividad_GrupoValoresNulos_LanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String[] datos1 = {null, "Gimnasio", "10", "6", "25.0"};
             String[] datos2 = {"111A", null, "10", "6", "25.0"};
 
-            assertThrows(ClubException.class, ()->{
+            assertThrows(ClubException.class, () -> {
                 club.anyadirActividad(datos1);
             });
-            assertThrows(ClubException.class, ()->{
+            assertThrows(ClubException.class, () -> {
                 club.anyadirActividad(datos2);
             });
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
 
-
     @Test
-    @DisplayName("Prueba que devuelva la cantidad correcta de plazas libres de una actividad ")
-    public void PlazasLibres_ActividadPerteneciente_DevuelvePlazasLibresActividad(){
+    public void PlazasLibres_ActividadPerteneciente_DevuelvePlazasLibresActividad() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",1);
+            ClubDeportivo club = new ClubDeportivo("UMA", 1);
             String actividad = "Zumba";
-            Grupo zumba = new Grupo("11AB",actividad,8,6,100.0);
+            Grupo zumba = new Grupo("11AB", actividad, 8, 6, 100.0);
             club.anyadirActividad(zumba);
             int plazas_libres_esperadas = 2;
 
             int plazas_libres_devueltas = club.plazasLibres("Zumba");
 
             assertEquals(plazas_libres_esperadas, plazas_libres_devueltas);
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que devuelva cero plazas libres cuando la actividad no pertenece al club ")
-    public void PlazasLibres_ActividadNoPerteneciente_DevuelveCero(){
+    public void PlazasLibres_ActividadNoPerteneciente_DevuelveCero() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",1);
+            ClubDeportivo club = new ClubDeportivo("UMA", 1);
             String actividad = "Gimnasio";
-            Grupo gimnasio = new Grupo("11AB",actividad,8,6,100.0);
+            Grupo gimnasio = new Grupo("11AB", actividad, 8, 6, 100.0);
             int plazas_libres_esperadas = 0;
 
             int plazas_libres_devueltas = club.plazasLibres(actividad);
 
             assertEquals(plazas_libres_esperadas, plazas_libres_devueltas);
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al buscar las plazas libres de una actividad nula")
-    public void PlazasLibres_ActividadNula_LanzaExcepcion(){
+    public void PlazasLibres_ActividadNula_LanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",1);
+            ClubDeportivo club = new ClubDeportivo("UMA", 1);
 
-            assertThrows(ClubException.class, ()->{
+            assertThrows(ClubException.class, () -> {
                 int p = club.plazasLibres(null);
             });
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al intentar matricular cuando hay mas personas que plazas libres")
-    public void Matricular_MasPersonasQuePlazas_LanzaExcepcion(){
+    public void Matricular_MasPersonasQuePlazas_LanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String actividad = "Gimnasio";
-            Grupo gimnasio = new Grupo("11AB",actividad,8,6,100.0);
+            Grupo gimnasio = new Grupo("11AB", actividad, 8, 6, 100.0);
             club.anyadirActividad(gimnasio);
 
-            assertThrows(ClubException.class, ()->{
-                club.matricular(actividad,10);
+            assertThrows(ClubException.class, () -> {
+                club.matricular(actividad, 10);
             });
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que se matriculen correctamente un grupo de personas a una determinada actividad")
-    public void Matricular_GrupoPersonas_GruposActualizasNumeroPlazasLibres(){
+    public void Matricular_GrupoPersonas_GruposActualizasNumeroPlazasLibres() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String actividad = "Gimnasio";
-            Grupo gimnasio1 = new Grupo("11AB",actividad,8,6,100.0);
-            Grupo gimnasio2 = new Grupo("22CD",actividad,10,5,20.0);
+            Grupo gimnasio1 = new Grupo("11AB", actividad, 8, 6, 100.0);
+            Grupo gimnasio2 = new Grupo("22CD", actividad, 10, 5, 20.0);
             club.anyadirActividad(gimnasio1);
             club.anyadirActividad(gimnasio2);
 
@@ -239,37 +252,35 @@ public class ClubDeportivoTest {
             int plazasLibresGimnasio1_Esperadas = 0;
             int plazasLibresGimnasio2_Esperadas = 2;
 
-            int plazasLibresGimnasio1 = gimnasio1.getPlazas()-gimnasio1.getMatriculados();
-            int plazasLibresGimnasio2 = gimnasio2.getPlazas()- gimnasio2.getMatriculados();
+            int plazasLibresGimnasio1 = gimnasio1.getPlazas() - gimnasio1.getMatriculados();
+            int plazasLibresGimnasio2 = gimnasio2.getPlazas() - gimnasio2.getMatriculados();
 
-            assertEquals(plazasLibresGimnasio1_Esperadas,plazasLibresGimnasio1);
+            assertEquals(plazasLibresGimnasio1_Esperadas, plazasLibresGimnasio1);
             assertEquals(plazasLibresGimnasio2_Esperadas, plazasLibresGimnasio2);
 
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al intentar matricular a un conjunto de personas en una actividad nula")
-    public void Matricular_ActividadNula_LanzaExcepcion(){
+    public void Matricular_ActividadNula_LanzaExcepcion() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
-            assertThrows(ClubException.class, ()->{
-                club.matricular(null,10);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            assertThrows(ClubException.class, () -> {
+                club.matricular(null, 10);
             });
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que los ingresos sean correctos")
-    public void Ingresos_ClubDeportivo_DevuelveCantidadCorrecta(){
+    public void Ingresos_ClubDeportivo_DevuelveCantidadCorrecta() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
-            Grupo gimnasio = new Grupo("11AB","Gimnasio",8,6,100.0);
-            Grupo zumba = new Grupo("22CD","Zumba",10,5,20.0);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            Grupo gimnasio = new Grupo("11AB", "Gimnasio", 8, 6, 100.0);
+            Grupo zumba = new Grupo("22CD", "Zumba", 10, 5, 20.0);
             club.anyadirActividad(gimnasio);
             club.anyadirActividad(zumba);
             double ingresos_esperados = 700.0;
@@ -278,50 +289,48 @@ public class ClubDeportivoTest {
 
             assertEquals(ingresos_esperados, ingresos_obtenidos);
 
-        } catch (ClubException e){
+        } catch (ClubException e) {
 
         }
 
     }
 
     @Test
-    @DisplayName("Prueba que la representacion del objeto sea correcta")
-    public void ToString_ClubConGrupos_DevuelveRepresentacionCorrecta(){
+    public void ToString_ClubConGrupos_DevuelveRepresentacionCorrecta() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA",2);
-            Grupo gimnasio = new Grupo("11AB","Gimnasio",8,6,100.0);
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            Grupo gimnasio = new Grupo("11AB", "Gimnasio", 8, 6, 100.0);
             club.anyadirActividad(gimnasio);
             String representacion_gimnasio = gimnasio.toString();
 
-            Grupo zumba = new Grupo("22CD","Zumba",10,7,25.0);
+            Grupo zumba = new Grupo("22CD", "Zumba", 10, 7, 25.0);
             club.anyadirActividad(zumba);
             String representacion_zumba = zumba.toString();
 
-            String representacion_esperada ="UMA --> [ " + representacion_gimnasio + ", " + representacion_zumba + " ]";
+            String representacion_esperada = "UMA --> [ " + representacion_gimnasio + ", " + representacion_zumba + " ]";
 
             String representacion_obtenida = club.toString();
 
             assertEquals(representacion_esperada, representacion_obtenida);
 
-        } catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que la representacion del grupo vacio sea la correcta")
-    public void ToString_ClubSinGrupos_DevuelveRepresentacionCorrecta(){
+    public void ToString_ClubSinGrupos_DevuelveRepresentacionCorrecta() {
         try {
             String nombre = "UMA";
-            ClubDeportivo club = new ClubDeportivo(nombre,2);
-            String representacion_esperada =  nombre + " --> [  ]";
+            ClubDeportivo club = new ClubDeportivo(nombre, 2);
+            String representacion_esperada = nombre + " --> [  ]";
 
             String representacion_obtenida = club.toString();
 
             assertEquals(representacion_esperada, representacion_obtenida);
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
-    
+
 }

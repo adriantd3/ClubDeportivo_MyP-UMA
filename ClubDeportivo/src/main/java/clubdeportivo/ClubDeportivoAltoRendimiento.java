@@ -22,11 +22,12 @@ public class ClubDeportivoAltoRendimiento extends ClubDeportivo{
 		maximoPersonasGrupo=maximo;
 		this.incremento=incremento;
 	}
-	
+
+
 	// El club de alto rendimiento tiene limitadas las plazas. Si el número de plazas que se recibe como parametro es mayor que el permitido, 
 	// se establece su valor al maximo permitido por grupo para el club.
 	public void anyadirActividad(String[] datos) throws ClubException {
-		if (datos.length<5) {
+		if (datos.length < 5) {
 			throw new ClubException ("ERROR: faltan datos");
 		}
 		try {
@@ -41,6 +42,14 @@ public class ClubDeportivoAltoRendimiento extends ClubDeportivo{
 		} catch (NumberFormatException e) {
 			throw new ClubException("ERROR: formato de número incorrecto");
 		}
+	}
+
+	//Metodo añadido para comprobar que el grupo de entrada cumple con el tamaño maximo
+	public void anyadirActividad(Grupo g) throws ClubException {
+		if (g.getPlazas() > maximoPersonasGrupo){
+			throw new ClubException("ERROR: Tamaño de grupo excede el máximo");
+		}
+		super.anyadirActividad(g);
 	}
 	
 	// Los ingresos del club tienen

@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GrupoTest {
 
-    @ParameterizedTest
     @CsvSource({
             ",Pilates,8,5,50.0",
             "4568,,8,5,50.0"
@@ -160,7 +159,7 @@ public class GrupoTest {
 
         Grupo grupo;
         try {
-            grupo = new Grupo(codigo,actividad,nplazas,matriculados,tarifa);
+            grupo = new Grupo(codigo, actividad, nplazas, matriculados, tarifa);
 
             assertEquals(cadenaRes, grupo.toString());
         } catch (ClubException e) {

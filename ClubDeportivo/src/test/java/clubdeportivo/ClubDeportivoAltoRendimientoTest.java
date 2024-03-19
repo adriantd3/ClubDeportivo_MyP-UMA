@@ -5,48 +5,59 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClubDeportivoAltoRendimientoTest {
 
     @ParameterizedTest
-    @DisplayName("Prueba que se lance una excepcion al crear un club de alto rendimiento" +
-            "con un maximo o incremento negativos")
     @CsvSource({
             "UMA1,-1,10.0",
             "UMA2,12,-1.0",
             "UMA3,0,12.0",
             "UMA4,10,0.0"
     })
-    public void ClubDeportivoAltoRendimiento_ValoresNegativos_LanzaExcepcion(String nombre, int maximo, double incremento){
+    public void ClubDeportivoAltoRendimiento_ValoresNegativos_LanzaExcepcion(String nombre, int maximo, double incremento) {
         // Assert
-        assertThrows(ClubException.class, ()->{
+        assertThrows(ClubException.class, () -> {
             new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
         });
     }
 
+    @Test
+    public void ClubDeportivoAltoRendimiento_ParametrosCorrectos_NoLanzaExcepcion() {
+        String nombre = "UMA";
+        int maximo = 5;
+        double incremento = 10.0;
+
+        assertDoesNotThrow(() -> {
+            new ClubDeportivoAltoRendimiento(nombre, maximo, incremento);
+        });
+
+    }
+
     @ParameterizedTest
-    @DisplayName("Prueba que se lance una excepcion al crear un club de alto rendimiento con tamaño cero o negativo")
     @CsvSource({
             "UMA1,0,10,10.0",
-            "UMA2,-1,10,12.0",
+            "UMA2,-1,10,10.0",
+            "UMA3,10,-10,10.0",
+            "UMA4,10,0,10.0",
+            "UMA5,10,-10,0",
+            "UMA6,10,-10,-10.0"
     })
-    public void ClubDeportivoAltoRendimiento_TamanoNegativo_LanzaExcepcion(String nombre, int tam, int maximo, double incremento){
+    public void ClubDeportivoAltoRendimientoTAM_ParametrosFueraDeRango_LanzaExcepcion(String nombre, int tam, int maximo, double incremento) {
         // Assert
-        assertThrows(ClubException.class, ()->{
+        assertThrows(ClubException.class, () -> {
             new ClubDeportivoAltoRendimiento(nombre, tam, maximo, incremento);
         });
     }
 
     @Test
-    @DisplayName("Prueba que los ingresos sean correctos")
-    public void Ingresos_ClubDeportivoAltoRendimiento_DevuelveCantidadCorrecta(){
+    public void Ingresos_ClubDeportivoAltoRendimiento_DevuelveCantidadCorrecta() {
         try {
             // Arrange
-            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA",2,10,10.0);
-            Grupo gimnasio = new Grupo("11AB","Gimnasio",8,6,100.0);
-            Grupo zumba = new Grupo("22CD","Zumba",10,5,20.0);
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            Grupo gimnasio = new Grupo("11AB", "Gimnasio", 8, 6, 100.0);
+            Grupo zumba = new Grupo("22CD", "Zumba", 10, 5, 20.0);
             club.anyadirActividad(gimnasio);
             club.anyadirActividad(zumba);
             double ingresos_esperados = 770.0;
@@ -57,40 +68,34 @@ public class ClubDeportivoAltoRendimientoTest {
             // Assert
             assertEquals(ingresos_esperados, ingresos_obtenidos);
 
-        } catch (ClubException e){
+        } catch (ClubException e) {
 
         }
 
     }
 
     @Test
-    @DisplayName("Prueba que lance una excepcion al proporcionar menos datos de los necesarios")
-    public void AnyadirActividad_PocosDatos_LanzaExcepcion(){
+    public void AnyadirActividad_PocosDatos_LanzaExcepcion() {
         try {
             // Arrange
-            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA",2,10,10.0);
-            String [] datos = {"111A","Kizomba","10","6"};
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            String[] datos = {"111A", "Kizomba", "10", "6"};
 
             // Assert
-            assertThrows(ClubException.class, ()->{
-               club.anyadirActividad(datos);
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(datos);
             });
-
-
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
     @Test
-    @DisplayName("Prueba que se aplique correctamente el maximo numero de personas por grupo")
-    public void AnyadirActividad_MaximoNumeroPersonas_AcortaNumeroPersonas(){
+    public void AnyadirActividad_MaximoNumeroPersonas_AcortaNumeroPersonas() {
         try {
             // Arrange
-            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA",2,10,10.0);
-            String [] datos = {"111A","Kizomba","20","6","25.0"};
-            //Grupo g = new Grupo("111A","Kizomba",20,6,25.0);
-            //int tamano_esperado = 10;
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            String[] datos = {"111A", "Kizomba", "20", "6", "25.0"};
             String esperada = "UMA --> [ (111A - Kizomba - 25.0 euros - P:10 - M:6) ]";
 
             // Act
@@ -100,12 +105,77 @@ public class ClubDeportivoAltoRendimientoTest {
             // Assert
             assertEquals(esperada, resultado);
 
-
-        }catch (ClubException e){
+        } catch (ClubException e) {
 
         }
     }
 
+    @Test
+    public void AnyadirActividad_FormatoNumPlazasIncorrecto_LanzaClubException() {
+        String numPlazas = "hola";
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            String[] grupo = {"111A", "Kizomba", numPlazas, "6", "25.0"};
 
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(grupo);
+            });
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void AnyadirActividad_FormatoMatriculadosIncorrecto_LanzaClubException() {
+        String matriculados = "hola";
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            String[] grupo = {"111A", "Kizomba", "15", matriculados, "25.0"};
+
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(grupo);
+            });
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void AnyadirActividad_FormatoTarifaIncorrecto_LanzaClubException() {
+        String tarifa = "hola";
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, 10, 10.0);
+            String[] grupo = {"111A", "Kizomba", "15", "6", tarifa};
+
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(grupo);
+            });
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void AnyadirActividad_GrupoExcedeMaximoPermitido_ReturnsClubException() {
+        try {
+            int maximoPersonas = 10;
+            int tamGrupo = 15;
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, maximoPersonas, 10.0);
+            Grupo grupo = new Grupo("456B", "Pilates", tamGrupo, 10, 50.0);
+
+            assertThrows(ClubException.class, () -> {
+                club.anyadirActividad(grupo);
+            });
+
+        } catch (ClubException e) {
+
+        }
+    }
 
 }
