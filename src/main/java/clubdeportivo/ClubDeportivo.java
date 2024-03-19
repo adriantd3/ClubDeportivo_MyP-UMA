@@ -14,7 +14,9 @@ public class ClubDeportivo {
 
 	public ClubDeportivo(String nombre, int n) throws ClubException {
 		/* NOTA: El atributo 'ngrupos', se inicializa a 0 por defecto */
-
+		if (nombre == null){
+			throw new ClubException("ERROR: el nombre del club no puede ser nulo");
+		}
 		if (n <= 0) {
 			throw new ClubException("ERROR: el club no puede crearse con un número de grupos 0 o negativo");
 		}
@@ -34,6 +36,9 @@ public class ClubDeportivo {
 	}
 
 	public void anyadirActividad(String[] datos) throws ClubException {
+		if (datos[0] ==null || datos[1] == null){
+			throw new ClubException("ERROR: el codigo o el nombre del nulo es nulo");
+		}
 		try {
 			int plazas = Integer.parseInt(datos[2]);
 			int matriculados = Integer.parseInt(datos[3]);
@@ -64,7 +69,10 @@ public class ClubDeportivo {
 		}
 	}
 
-	public int plazasLibres(String actividad) {
+	public int plazasLibres(String actividad) throws ClubException {
+		if (actividad == null){
+			throw  new ClubException("ERROR: la actividad no puede ser nula");
+		}
 		int p = 0;
 		int i = 0;
 		while (i < ngrupos) {
