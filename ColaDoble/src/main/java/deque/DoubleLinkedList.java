@@ -14,21 +14,17 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
 
     @Override
     public void prepend(T value) {
-        if (value == null){
+        if (value == null) {
             throw new DoubleLinkedQueueException("ERROR: no se puede añadir un elemento nulo");
         }
 
-        if (first == null){ // Si no hay elementos
-            LinkedNode<T> nuevo = new LinkedNode<>(value, null, null);
+        LinkedNode<T> nuevo;
+        if (first == null) { // Si no hay elementos
+            nuevo = new LinkedNode<>(value, null, null);
             first = nuevo;
             last = nuevo;
-        }else if (first.isLastNode()){ // Si solo hay un elemento
-            LinkedNode<T> nuevo = new LinkedNode<>(value, null, first);
-            first.setPrevious(nuevo);
-            last = first;
-            first = nuevo;
-        }else { // Si hay mas de un elemento
-            LinkedNode<T> nuevo = new LinkedNode<>(value, null, first);
+        } else { // Si hay uno o más elementos
+            nuevo = new LinkedNode<>(value, null, first);
             first.setPrevious(nuevo);
             first = nuevo;
         }
@@ -37,35 +33,31 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
 
     @Override
     public void append(T value) {
-        if (value == null){
+        if (value == null) {
             throw new DoubleLinkedQueueException("ERROR: no se puede añadir un elemento nulo");
         }
 
-        if (first == null){ // Si no hay elementos
-            LinkedNode<T> nuevo = new LinkedNode<>(value, null, null);
+        LinkedNode<T> nuevo;
+        if (last == null) { // Si no hay elementos
+            nuevo = new LinkedNode<>(value, null, null);
             first = nuevo;
-            last = nuevo;
-        }else if (first.isLastNode()){ // Si solo hay un elemento
-            LinkedNode<T> nuevo = new LinkedNode<>(value, last, null);
+        } else { // Si hay uno o más elementos
+            nuevo = new LinkedNode<>(value, last, null);
             last.setNext(nuevo);
-            last = nuevo;
-        }else { // Si hay mas de un elemento
-            LinkedNode<T> nuevo = new LinkedNode<>(value, last, null);
-            last.setNext(nuevo);
-            last = nuevo;
         }
+        last = nuevo;
         size++;
     }
 
     @Override
     public void deleteFirst() {
-        if (first == null){
+        if (first == null) { //
             throw new DoubleLinkedQueueException("ERROR: no se puede eliminar un elemento de una lista vacia");
-        }else if (first.isLastNode()){
+        } else if (first.isLastNode()) {
             first = null;
             last = null;
-            size--;
-        }else {
+            size = 0;
+        } else {
             LinkedNode<T> next = first.getNext();
             next.setPrevious(null);
             first = next;
@@ -75,13 +67,13 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
 
     @Override
     public void deleteLast() {
-        if (first == null){
+        if (last == null) {
             throw new DoubleLinkedQueueException("ERROR: no se puede eliminar un elemento de una lista vacia");
-        }else if (first.isLastNode()){
+        } else if (last.isFirstNode()) {
             first = null;
             last = null;
-            size--;
-        }else {
+            size = 0;
+        } else {
             LinkedNode<T> previous = last.getPrevious();
             previous.setNext(null);
             last = previous;
@@ -91,18 +83,18 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
 
     @Override
     public T first() {
-        if (first == null){
+        if (first == null) {
             throw new DoubleLinkedQueueException("ERROR: la lista esta vacia, no se puede acceder al primer elemento");
-        }else {
+        } else {
             return first.getItem();
         }
     }
 
     @Override
     public T last() {
-        if (first == null){
+        if (first == null) {
             throw new DoubleLinkedQueueException("ERROR: la lista esta vacia, no se puede acceder al ultimo elemento");
-        }else {
+        } else {
             return last.getItem();
         }
     }
@@ -112,15 +104,14 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         return this.size;
     }
 
-    /*
     @Override
-    public String toString(){
+    public String toString() {
         LinkedNode<T> elem = first;
         int n = size;
-        String res ="{ ";
-        while (size > 0){
-            res +=  " " + elem.getItem();
-            if (size != 1){
+        String res = "{";
+        while (size > 0) {
+            res += " " + elem.getItem();
+            if (size != 1) {
                 elem = elem.getNext();
             }
             size--;
@@ -129,5 +120,4 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         return res;
     }
 
-     */
 }

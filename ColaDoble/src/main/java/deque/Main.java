@@ -14,6 +14,6 @@ public class Main {
         cola.deleteFirst();
         cola.deleteFirst();
         System.out.println(cola.size());
-        //System.out.println(cola.toString());
+        System.out.println(cola.toString());
     }
 }
