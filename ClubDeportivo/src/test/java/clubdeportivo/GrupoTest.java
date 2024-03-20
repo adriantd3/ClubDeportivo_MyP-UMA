@@ -13,7 +13,7 @@ public class GrupoTest {
             ",Pilates,8,5,50.0",
             "4568,,8,5,50.0"
     })
-    public void Grupo_StringVacio_ReturnsClubException(String codigo, String actividad, int nplazas, int matriculados, double tarifa) {
+    public void Grupo_StringVacio_LanzaClubException(String codigo, String actividad, int nplazas, int matriculados, double tarifa) {
         assertThrows(ClubException.class, () ->
                 new Grupo(codigo, actividad, nplazas, matriculados, tarifa));
     }
@@ -24,13 +24,13 @@ public class GrupoTest {
             "456B,Pilates,8,-5,50.0",
             "456B,Pilates,8,5,-50.0"
     })
-    public void Grupo_ValoresNegativos_ReturnsClubException(String codigo, String actividad, int nplazas, int matriculados, double tarifa) {
+    public void Grupo_ValoresNegativos_LanzaClubException(String codigo, String actividad, int nplazas, int matriculados, double tarifa) {
         assertThrows(ClubException.class, () ->
                 new Grupo(codigo, actividad, nplazas, matriculados, tarifa));
     }
 
     @Test
-    public void Grupo_MatriculasMayorQuePlazas_ReturnsClubException() {
+    public void Grupo_MatriculasMayorQuePlazas_LanzaClubException() {
         int nplazas = 10;
         int matriculas = 15;
 
@@ -60,10 +60,10 @@ public class GrupoTest {
     }
 
     @Test
-    public void ActualizarPlazas_NumeroNegativo_ReturnsClubException() {
+    public void ActualizarPlazas_NumeroNegativo_LanzaClubException() {
         int nPlazas = -10;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
 
             assertThrows(ClubException.class, () ->
@@ -74,10 +74,10 @@ public class GrupoTest {
     }
 
     @Test
-    public void ActualizarPlazas_NumeroMenorQueMatriculas_ReturnsClubException() {
+    public void ActualizarPlazas_NumeroMenorQueMatriculas_LanzaClubException() {
         int nPLazas = 5;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
 
             grupo.actualizarPlazas(nPLazas);
@@ -92,8 +92,8 @@ public class GrupoTest {
     @Test
     public void ActualizarPlazas_ParametroEnRango_ActualizaPlazas() {
         int nPlazas = 20;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
 
             grupo.actualizarPlazas(nPlazas);
@@ -105,10 +105,10 @@ public class GrupoTest {
     }
 
     @Test
-    public void Matricular_NumeroNegativo_ReturnsClubException() {
+    public void Matricular_NumeroNegativo_LanzaClubException() {
         int nMatriculas = -10;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
 
             assertThrows(ClubException.class, () ->
@@ -119,10 +119,10 @@ public class GrupoTest {
     }
 
     @Test
-    public void Matricular_PlazasInsuficientes_ReturnsClubException() {
+    public void Matricular_PlazasInsuficientes_LanzaClubException() {
         int nMatriculas = 10;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, 10, 50.0);
 
             assertThrows(ClubException.class, () ->
@@ -136,8 +136,8 @@ public class GrupoTest {
     public void Matricular_ParametroEnRango_IncrementaNumMatriculados() {
         int nuevasMatriculas = 5;
         int matriculas = 10;
-        Grupo grupo;
         try {
+            Grupo grupo;
             grupo = new Grupo("456B", "Pilates", 15, matriculas, 50.0);
 
             grupo.matricular(nuevasMatriculas);
@@ -155,11 +155,10 @@ public class GrupoTest {
         int nplazas = 8;
         int matriculados = 5;
         double tarifa = 50.0;
-
-        String cadenaRes = "(" + codigo + " - " + actividad + " - " + tarifa + " euros " + "- P:" + nplazas + " - M:" + matriculados + ")";
-
         Grupo grupo;
+
         try {
+            String cadenaRes = "(" + codigo + " - " + actividad + " - " + tarifa + " euros " + "- P:" + nplazas + " - M:" + matriculados + ")";
             grupo = new Grupo(codigo, actividad, nplazas, matriculados, tarifa);
 
             assertEquals(cadenaRes, grupo.toString());

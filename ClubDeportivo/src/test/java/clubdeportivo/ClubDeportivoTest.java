@@ -18,7 +18,7 @@ public class ClubDeportivoTest {
             "UMA,0",
             "1Ma,-1",
     })
-    public void ClubDeportivo_NumeroNegativoGrupos_LanzaExcepcion(String nombre, int numero_grupos) {
+    public void ClubDeportivo_NumeroNegativoGrupos_LanzaClubException(String nombre, int numero_grupos) {
 
         assertThrows(ClubException.class, () -> {
             new ClubDeportivo(nombre, numero_grupos);
@@ -27,14 +27,14 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void ClubDeportivo_NombreNulo_LanzaExcepcion() {
+    public void ClubDeportivo_NombreNulo_LanzaClubException() {
         assertThrows(ClubException.class, () -> {
             new ClubDeportivo(null);
         });
     }
 
     @Test
-    public void ClubDeportivo_PasoNombre_NoLanzaExcepcion() {
+    public void ClubDeportivo_PasoNombre_NoLanzaClubException() {
         String nombre = "UMA";
         assertDoesNotThrow(() -> {
             new ClubDeportivo(nombre);
@@ -43,7 +43,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void AnyadirActividad_GrupoNulo_LanzaExcepcion() {
+    public void AnyadirActividad_GrupoNulo_LanzaClubException() {
 
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 1);
@@ -59,7 +59,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void AnyadirActividad_ArrayStringCorrecto_NoLanzaExcepcion() {
+    public void AnyadirActividad_ArrayStringCorrecto_NoLanzaClubException() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String[] grupo = {"756B", "Comba", "20", "12", "30.0"};
@@ -73,7 +73,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void AnyadirActividadGrupo_CapacidadClubCompleta_LanzaExcepcion() {
+    public void AnyadirActividadGrupo_CapacidadClubCompleta_LanzaClubException() {
         try {
             int capacidad = 1;
             ClubDeportivo club = new ClubDeportivo("UMA", capacidad);
@@ -91,13 +91,12 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void AnyadirActividadString_CapacidadClubCompleta_LanzaExcepcion() {
+    public void AnyadirActividadString_CapacidadClubCompleta_LanzaClubException() {
         try {
             int capacidad = 1;
             ClubDeportivo club = new ClubDeportivo("UMA", capacidad);
             Grupo zumba = new Grupo("11AB", "Zumba", 10, 5, 25.0);
             club.anyadirActividad(zumba);
-
             String[] datos = new String[]{"223B", "Baloncesto", "10", "5", "50.0"};
 
             assertThrows(ClubException.class, () -> {
@@ -116,9 +115,9 @@ public class ClubDeportivoTest {
             Grupo zumba = new Grupo("11AB", "Zumba", 10, 5, 25.0);
             club.anyadirActividad(zumba);
             Grupo zumba2 = new Grupo("11AB", "Zumba", 20, 5, 25.0);
-            int plazas_esperadas = 20;
 
             club.anyadirActividad(zumba2);
+            int plazas_esperadas = 20;
             int plazas_devueltas = zumba.getPlazas();
 
             assertEquals(plazas_esperadas, plazas_devueltas);
@@ -137,9 +136,9 @@ public class ClubDeportivoTest {
             "78JK,Gimnasio,21,3.5,False"
 
     })
-    public void AnyadirActividad_GrupoValoresIncorrectos_LanzaExcepcion(String codigo, String actividad,
-                                                                        String nplazas, String matriculados,
-                                                                        String tarifa) {
+    public void AnyadirActividad_GrupoValoresIncorrectos_LanzaClubException(String codigo, String actividad,
+                                                                            String nplazas, String matriculados,
+                                                                            String tarifa) {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String[] datos = {codigo, actividad, nplazas, matriculados, tarifa};
@@ -154,17 +153,28 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void AnyadirActividad_GrupoValoresNulos_LanzaExcepcion() {
+    public void AnyadirActividad_GrupoCodigoNulo_LanzaClubException() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 2);
-            String[] datos1 = {null, "Gimnasio", "10", "6", "25.0"};
-            String[] datos2 = {"111A", null, "10", "6", "25.0"};
+            String[] datos = {null, "Gimnasio", "10", "6", "25.0"};
 
             assertThrows(ClubException.class, () -> {
-                club.anyadirActividad(datos1);
+                club.anyadirActividad(datos);
             });
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void AnyadirActividad_GrupoActividadNulo_LanzaClubException() {
+        try {
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            String[] datos = {"111A", null, "10", "6", "25.0"};
+
             assertThrows(ClubException.class, () -> {
-                club.anyadirActividad(datos2);
+                club.anyadirActividad(datos);
             });
 
         } catch (ClubException e) {
@@ -180,8 +190,8 @@ public class ClubDeportivoTest {
             String actividad = "Zumba";
             Grupo zumba = new Grupo("11AB", actividad, 8, 6, 100.0);
             club.anyadirActividad(zumba);
-            int plazas_libres_esperadas = 2;
 
+            int plazas_libres_esperadas = 2;
             int plazas_libres_devueltas = club.plazasLibres("Zumba");
 
             assertEquals(plazas_libres_esperadas, plazas_libres_devueltas);
@@ -196,8 +206,8 @@ public class ClubDeportivoTest {
             ClubDeportivo club = new ClubDeportivo("UMA", 1);
             String actividad = "Gimnasio";
             Grupo gimnasio = new Grupo("11AB", actividad, 8, 6, 100.0);
-            int plazas_libres_esperadas = 0;
 
+            int plazas_libres_esperadas = 0;
             int plazas_libres_devueltas = club.plazasLibres(actividad);
 
             assertEquals(plazas_libres_esperadas, plazas_libres_devueltas);
@@ -207,7 +217,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void PlazasLibres_ActividadNula_LanzaExcepcion() {
+    public void PlazasLibres_ActividadNula_LanzaClubException() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 1);
 
@@ -221,7 +231,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void Matricular_MasPersonasQuePlazas_LanzaExcepcion() {
+    public void Matricular_MasPersonasQuePlazas_LanzaClubException() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 2);
             String actividad = "Gimnasio";
@@ -264,7 +274,7 @@ public class ClubDeportivoTest {
     }
 
     @Test
-    public void Matricular_ActividadNula_LanzaExcepcion() {
+    public void Matricular_ActividadNula_LanzaClubException() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 2);
             assertThrows(ClubException.class, () -> {
@@ -302,13 +312,11 @@ public class ClubDeportivoTest {
             Grupo gimnasio = new Grupo("11AB", "Gimnasio", 8, 6, 100.0);
             club.anyadirActividad(gimnasio);
             String representacion_gimnasio = gimnasio.toString();
-
             Grupo zumba = new Grupo("22CD", "Zumba", 10, 7, 25.0);
             club.anyadirActividad(zumba);
             String representacion_zumba = zumba.toString();
 
             String representacion_esperada = "UMA --> [ " + representacion_gimnasio + ", " + representacion_zumba + " ]";
-
             String representacion_obtenida = club.toString();
 
             assertEquals(representacion_esperada, representacion_obtenida);
@@ -323,8 +331,8 @@ public class ClubDeportivoTest {
         try {
             String nombre = "UMA";
             ClubDeportivo club = new ClubDeportivo(nombre, 2);
-            String representacion_esperada = nombre + " --> [  ]";
 
+            String representacion_esperada = nombre + " --> [  ]";
             String representacion_obtenida = club.toString();
 
             assertEquals(representacion_esperada, representacion_obtenida);
