@@ -51,7 +51,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
 
     @Override
     public void deleteFirst() {
-        if (first == null) { //
+        if (first == null) {
             throw new DoubleLinkedQueueException("ERROR: no se puede eliminar un elemento de una lista vacia");
         } else if (first.isLastNode()) {
             first = null;
