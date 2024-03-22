@@ -1,3 +1,5 @@
+// Auhtors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package clubdeportivo;
 
 import org.junit.jupiter.api.DisplayName;
@@ -40,8 +42,8 @@ public class ClubDeportivoAltoRendimientoTest {
             "UMA2,-1,10,10.0",
             "UMA3,10,-10,10.0",
             "UMA4,10,0,10.0",
-            "UMA5,10,-10,0",
-            "UMA6,10,-10,-10.0"
+            "UMA5,10,10,0",
+            "UMA6,10,10,-10.0"
     })
     public void ClubDeportivoAltoRendimientoTAM_ParametrosFueraDeRango_LanzaClubException(String nombre, int tam, int maximo, double incremento) {
         assertThrows(ClubException.class, () -> {

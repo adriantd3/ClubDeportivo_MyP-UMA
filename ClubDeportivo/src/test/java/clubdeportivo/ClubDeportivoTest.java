@@ -1,3 +1,5 @@
+// Auhtors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package clubdeportivo;
 
 import clubdeportivo.ClubDeportivo;
