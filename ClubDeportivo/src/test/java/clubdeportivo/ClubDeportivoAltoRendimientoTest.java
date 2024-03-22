@@ -107,6 +107,27 @@ public class ClubDeportivoAltoRendimientoTest {
     }
 
     @Test
+    public void AnyadirActividad_PlazasIgualMaximoPermitido_NoModifica(){
+        int numMaxPermitido = 10;
+        try {
+            // Arrange
+            ClubDeportivo club = new ClubDeportivoAltoRendimiento("UMA", 2, numMaxPermitido, 10.0);
+            String[] datos = {"111A", "Kizomba", String.valueOf(numMaxPermitido), "6", "25.0"};
+            String esperada = "UMA --> [ (111A - Kizomba - 25.0 euros - P:" + numMaxPermitido + " - M:6) ]";
+
+            // Act
+            club.anyadirActividad(datos);
+            String resultado = club.toString();
+
+            // Assert
+            assertEquals(esperada, resultado);
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
     public void AnyadirActividad_FormatoNumPlazasIncorrecto_LanzaClubException() {
         String numPlazas = "hola";
         try {
@@ -153,6 +174,7 @@ public class ClubDeportivoAltoRendimientoTest {
 
         }
     }
+
 
     @Test
     public void AnyadirActividad_GrupoExcedeMaximoPermitido_LanzaClubException() {
