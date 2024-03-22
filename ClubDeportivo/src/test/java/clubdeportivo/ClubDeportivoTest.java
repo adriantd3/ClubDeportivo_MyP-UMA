@@ -206,6 +206,8 @@ public class ClubDeportivoTest {
     public void PlazasLibres_ActividadNoPerteneciente_DevuelveCero() {
         try {
             ClubDeportivo club = new ClubDeportivo("UMA", 1);
+            Grupo zumba = new Grupo("22CD", "Zumba", 10, 2, 50.0);
+            club.anyadirActividad(zumba);
             String actividad = "Gimnasio";
             Grupo gimnasio = new Grupo("11AB", actividad, 8, 6, 100.0);
 
@@ -252,10 +254,12 @@ public class ClubDeportivoTest {
     @Test
     public void Matricular_GrupoPersonas_GruposActualizasNumeroPlazasLibres() {
         try {
-            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            ClubDeportivo club = new ClubDeportivo("UMA", 4);
             String actividad = "Gimnasio";
             Grupo gimnasio1 = new Grupo("11AB", actividad, 8, 6, 100.0);
+            Grupo baile = new Grupo("33FG", "Baile", 10, 3, 30.0);
             Grupo gimnasio2 = new Grupo("22CD", actividad, 10, 5, 20.0);
+            club.anyadirActividad(baile);
             club.anyadirActividad(gimnasio1);
             club.anyadirActividad(gimnasio2);
 
@@ -282,6 +286,45 @@ public class ClubDeportivoTest {
             assertThrows(ClubException.class, () -> {
                 club.matricular(null, 10);
             });
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void Matricular_ActividadNoPerteneciente_NoActualizaClubDeportivo(){
+        try {
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            Grupo gimnasio = new Grupo("11AB", "Gimnasio", 8, 6, 100.0);
+            Grupo baile = new Grupo("33FG", "Baile", 10, 3, 30.0);
+            club.anyadirActividad(gimnasio);
+            club.anyadirActividad(baile);
+            String representacion = club.toString();
+            String actividadNoPerteneciente = "Zumba";
+
+            club.matricular(actividadNoPerteneciente, 0);
+
+            assertEquals(representacion, club.toString());
+
+
+        } catch (ClubException e) {
+
+        }
+    }
+
+    @Test
+    public void Matricular_CeroPersonas_NoActualizaClubDeportivo(){
+        try {
+            ClubDeportivo club = new ClubDeportivo("UMA", 2);
+            String actividad = "Gimnasio";
+            Grupo gimnasio = new Grupo("11AB", actividad, 8, 6, 100.0);
+            club.anyadirActividad(gimnasio);
+            String representacion = club.toString();
+            club.matricular(actividad, 0);
+
+            assertEquals(representacion, club.toString());
+
+
         } catch (ClubException e) {
 
         }
