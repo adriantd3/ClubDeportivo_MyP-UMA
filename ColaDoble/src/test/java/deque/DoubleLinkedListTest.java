@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("A list")
 public class DoubleLinkedListTest {
 
     @Nested
@@ -15,6 +16,18 @@ public class DoubleLinkedListTest {
         public void DoubleLinkedList_SizeIsZero(){
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             assertEquals(0,list.size());
+        }
+
+        @Test
+        public void DoubleLinkedList_FirstNodeIsNull(){
+            DoubleLinkedList<String> list = new DoubleLinkedList<>();
+            assertThrows(DoubleLinkedQueueException.class, ()->{list.first();});
+        }
+
+        @Test
+        public void DoubleLinkedList_LastNodeIsNull(){
+            DoubleLinkedList<String> list = new DoubleLinkedList<>();
+            assertThrows(DoubleLinkedQueueException.class, ()->{list.last();});
         }
     }
 

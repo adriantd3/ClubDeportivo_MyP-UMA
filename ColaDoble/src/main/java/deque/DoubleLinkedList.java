@@ -104,7 +104,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         return this.size;
     }
 
-    @Override
+    /*@Override
     public String toString() {
         LinkedNode<T> elem = first;
         int n = size;
@@ -118,6 +118,6 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         }
         res += " }";
         return res;
-    }
+    }*/
 
 }
