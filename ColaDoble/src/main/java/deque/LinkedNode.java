@@ -1,3 +1,5 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package deque;
 
 /**
@@ -13,6 +15,10 @@ class LinkedNode<T> {
     private LinkedNode<T> next;
 
     LinkedNode(T item, LinkedNode<T> previous, LinkedNode<T> next) {
+        if(item == null){
+            throw new DoubleLinkedQueueException("ERROR: Item cannot be null");
+        }
+
         this.item = item;
         this.previous = previous;
         this.next = next;
@@ -23,6 +29,9 @@ class LinkedNode<T> {
     }
 
     void setItem(T item) {
+        if (item == null){
+            throw new DoubleLinkedQueueException("ERROR: Item cannot be null");
+        }
         this.item = item;
     }
 
@@ -49,7 +58,7 @@ class LinkedNode<T> {
     boolean isLastNode() {
         return next == null;
     }
-
+    
     boolean isNotATerminalNode() {
         return !(isFirstNode() || isLastNode());
     }
