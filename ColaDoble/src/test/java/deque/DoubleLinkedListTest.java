@@ -6,52 +6,73 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("A list")
+@DisplayName("A DoubleLinkedList")
 public class DoubleLinkedListTest {
 
     @Nested
-    @DisplayName("Constructor")
-    class Constructor{
+    @DisplayName("when new")
+    class Constructor {
         @Test
-        public void DoubleLinkedList_SizeIsZero(){
+        @DisplayName("is empty with size 0")
+        public void DoubleLinkedList_SizeIsZero_CreatesList() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertEquals(0,list.size());
+            int expected_size = 0;
+
+            int res_size = list.size();
+
+            assertEquals(expected_size, res_size);
         }
 
         @Test
-        public void DoubleLinkedList_FirstNodeIsNull(){
+        @DisplayName("first node is null")
+        public void DoubleLinkedList_FirstNodeIsNull_CreatesList() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.first();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.first();
+            });
         }
 
         @Test
-        public void DoubleLinkedList_LastNodeIsNull(){
+        @DisplayName("last node is null")
+        public void DoubleLinkedList_LastNodeIsNull_CreatesList() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.last();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.last();
+            });
         }
     }
 
     @Nested
-    @DisplayName("Prepend")
-    class Prepend{
+    @DisplayName("prepend")
+    class Prepend {
         @Test
-        public void Prepend_NullValue_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on null node")
+        public void Prepend_NullNode_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.prepend(null);});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.prepend(null);
+            });
         }
 
         @Test
-        public void Prepend_EmptyList_FirstAndLastAreTheSame(){
+        @DisplayName("on empty list, provokes first and last to be the same")
+        public void Prepend_EmptyList_FirstAndLastAreTheSame() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
+
             list.prepend("First");
 
             assertEquals(list.first(), list.last());
         }
 
         @Test
-        public void Prepend_NonEmptyList_UpdatesFirstNode(){
+        @DisplayName("on non-empty list, updates first node reference")
+        public void Prepend_NonEmptyList_UpdatesFirstNode() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.prepend("One");
+
             String first = list.first();
             list.prepend("Two");
 
@@ -59,73 +80,86 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        public void Prepend_UpdatesListSize(){
+        @DisplayName("increases by one the list size")
+        public void Prepend_InRageParameters_IncreasesListSize() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            int size = list.size();
-            int expected = size + 1;
+            int expected_size = list.size() + 1;
 
             list.prepend("Elem");
-            size = list.size();
+            int res_size = list.size();
 
-            assertEquals(expected, size);
+            assertEquals(expected_size, res_size);
         }
     }
 
     @Nested
-    @DisplayName("Append")
-    class Append{
+    @DisplayName("append")
+    class Append {
         @Test
-        public void Append_NullValue_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on null node")
+        public void Append_NullNode_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.append(null);});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.append(null);
+            });
         }
 
         @Test
-        public void Append_EmptyList_FirstAndLastAreTheSame(){
+        @DisplayName("on empty list, provokes first and last to be the same")
+        public void Append_EmptyList_FirstAndLastAreTheSame() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
+
             list.append("First");
 
             assertEquals(list.first(), list.last());
         }
 
         @Test
-        public void Append_NonEmptyList_UpdatesLastNode(){
+        @DisplayName("on non-empty list, updates last node reference")
+        public void Append_NonEmptyList_UpdatesLastNode() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
-            String last = list.last();
 
+            String last = list.last();
             list.append("Two");
 
             assertNotEquals(last, list.last());
         }
 
         @Test
-        public void Append_UpdatesListSize(){
+        @DisplayName("increases by one the list size")
+        public void Append_UpdatesListSize() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            int size = list.size();
-            int expected = size + 1;
+            int expected_size = list.size() + 1;
 
             list.append("Elem");
-            size = list.size();
+            int res_size = list.size();
 
-            assertEquals(expected, size);
+            assertEquals(expected_size, res_size);
         }
 
     }
 
     @Nested
-    @DisplayName("DeleteFirst")
-    class DeleteFirst{
+    @DisplayName("deleteFirst")
+    class DeleteFirst {
         @Test
-        public void DeleteFirst_EmptyList_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on empty list")
+        public void DeleteFirst_EmptyList_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.deleteFirst();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.deleteFirst();
+            });
         }
 
         @Test
-        public void DeleteFirst_ListHasOneElement_ListSizeIsZero(){
+        @DisplayName("on a single element list, decreases list size to 0")
+        public void DeleteFirst_ListHasOneElement_ListSizeIsZero() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("First");
+
             list.deleteFirst();
 
             assertEquals(0, list.size());
@@ -133,137 +167,161 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        public void DeleteFirst_SecondNodeIsNewFirstNode(){
+        @DisplayName("updates first node reference")
+        public void DeleteFirst_ListHasMoreThanOneElement_UpdatesFirstNodeReference() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.prepend("First");
             String second = "second";
             list.append(second);
+
             list.deleteFirst();
+
             assertEquals(second, list.first());
         }
 
         @Test
-        public void DeleteFirst_NonEmptyList_UpdatesListSize(){
+        @DisplayName("decreases list size by one")
+        public void DeleteFirst_NonEmptyList_DecreasesListSize() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.prepend("First");
-            int size = list.size();
-            int expected = size - 1;
+            int expected_size = list.size() - 1;
 
             list.deleteFirst();
-            size = list.size();
+            int res_size = list.size();
 
-            assertEquals(expected, size);
-
+            assertEquals(expected_size, res_size);
         }
 
     }
 
     @Nested
-    @DisplayName("DeleteLast")
-    class DeleteLast{
+    @DisplayName("deleteLast")
+    class DeleteLast {
         @Test
-        public void DeleteLast_EmptyList_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on empty list")
+        public void DeleteLast_EmptyList_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.deleteLast();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.deleteLast();
+            });
         }
 
         @Test
-        public void DeleteLast_ListHasOneNode_ListSizeIsZero(){
+        @DisplayName("on a single element list, decreases size to 0")
+        public void DeleteLast_ListHasOneNode_ListSizeIsZero() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("First");
             list.deleteLast();
 
             assertEquals(0, list.size());
-
         }
 
         @Test
-        public void DeleteLast_PreviousToLastNodeIsNewLastNode(){
+        @DisplayName("updates last node reference")
+        public void DeleteLast_PreviousToLastNodeIsNewLastNode() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             String previous = "Previous";
             list.prepend(previous);
             list.append("Last");
+
             list.deleteLast();
+
             assertEquals(previous, list.last());
         }
 
         @Test
-        public void DeleteLast_NonEmptyList_UpdatesListSize(){
+        @DisplayName("decreases list size by one")
+        public void DeleteLast_NonEmptyList_UpdatesListSize() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.prepend("First");
-            int size = list.size();
-            int expected = size - 1;
+            int expected_size = list.size() - 1;
 
             list.deleteLast();
-            size = list.size();
+            int res_size = list.size();
 
-            assertEquals(expected, size);
-
+            assertEquals(expected_size, res_size);
         }
-
-
     }
 
     @Nested
-    @DisplayName("First")
-    class First{
+    @DisplayName("first")
+    class First {
         @Test
-        public void First_EmptyList_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on empty list")
+        public void First_EmptyList_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.first();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.first();
+            });
         }
 
         @Test
-        public void First_NonEmptyList_ReturnsFirstNodeItem(){
+        @DisplayName("returns first node item")
+        public void First_NonEmptyList_ReturnsFirstNodeItem() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            String first = "First";
-            list.append(first);
+            String expected_first = "First";
+            list.append(expected_first);
             list.append("Second");
 
-            assertEquals(first, list.first());
+            String res_first = list.first();
+
+            assertEquals(expected_first, res_first);
         }
 
     }
 
     @Nested
-    @DisplayName("Last")
-    class Last{
+    @DisplayName("last")
+    class Last {
         @Test
-        public void Last_EmptyList_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on empty list")
+        public void Last_EmptyList_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.last();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.last();
+            });
         }
 
         @Test
-        public void Last_NonEmptyList_ReturnsLastNodeItem(){
+        @DisplayName("returns last node item")
+        public void Last_NonEmptyList_ReturnsLastNodeItem() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            list.append("First");
-            list.append("Second");
-            String last = "Last";
-            list.append(last);
+            String expected_last = "Last";
+            list.prepend(expected_last);
+            list.prepend("First");
 
-            assertEquals(last, list.last());
+            String res_last = list.last();
+
+            assertEquals(expected_last, res_last);
         }
     }
 
     @Nested
-    @DisplayName("Size")
-    class Size{
+    @DisplayName("size")
+    class Size {
         @Test
-        public void Size_EmptyList_ReturnsZero(){
+        @DisplayName("is 0 on empty list")
+        public void Size_EmptyList_ReturnsZero() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
 
             assertEquals(0, list.size());
         }
+
         @Test
-        public void Size_NonEmptyList_ReturnsCorrectSize(){
+        @DisplayName("is correct on non-empty list")
+        public void Size_NonEmptyList_ReturnsCorrectSize() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
             list.append("Three");
             int expected_size = 3;
 
-            assertEquals(expected_size, list.size());
+            int res_size = list.size();
+
+            assertEquals(expected_size, res_size);
         }
 
 

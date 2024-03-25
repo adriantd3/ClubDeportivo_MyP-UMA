@@ -8,14 +8,14 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("A node")
+@DisplayName("A LinkedNode")
 public class LinkedNodeTest {
 
     @Nested
-    @DisplayName("constructor")
+    @DisplayName("when new")
     class Constructor {
         @Test
-        @DisplayName("does not have nor previous nor next node")
+        @DisplayName("with no previous nor next node")
         public void LinkedNode_NoPreviousNoNext_CreatesNode() {
             String item = "FirstNode";
 
@@ -26,7 +26,7 @@ public class LinkedNodeTest {
         }
 
         @Test
-        @DisplayName("has previous but no next node")
+        @DisplayName("with previous but no next node")
         public void LinkedNode_HasPreviousNoNext_CreatesNode() {
             String item = "FirstNode";
             LinkedNode<String> previous = new LinkedNode<>("Previous", null, null);
@@ -38,7 +38,7 @@ public class LinkedNodeTest {
         }
 
         @Test
-        @DisplayName("does not have previous node but has next node")
+        @DisplayName("with no previous but next node")
         public void LinkedNode_NoPreviousHasNext_CreatesNode() {
             String item = "FirstNode";
             LinkedNode<String> next = new LinkedNode<>("Next", null, null);
@@ -50,7 +50,7 @@ public class LinkedNodeTest {
         }
 
         @Test
-        @DisplayName("has previous and next node")
+        @DisplayName("with previous and next node")
         public void LinkedNode_HasPreviousHasNext_CreatesNode() {
             String item = "FirstNode";
             LinkedNode<String> previous = new LinkedNode<>("Previous", null, null);
@@ -63,7 +63,7 @@ public class LinkedNodeTest {
         }
 
         @Test
-        @DisplayName("with a nullable item")
+        @DisplayName("with a nullable item throws exception")
         public void LinkedNode_NullableItem_ThrowsDoubleLinkedQueueException() {
             String item = null;
 
@@ -136,7 +136,7 @@ public class LinkedNodeTest {
 
     @Nested
     @DisplayName("setter")
-    class Setters{
+    class Setters {
         @ParameterizedTest
         @DisplayName("updates node item")
         @CsvSource({
@@ -155,7 +155,7 @@ public class LinkedNodeTest {
 
         @Test
         @DisplayName("throws exception on null item")
-        public void SetItem_NullItem_ThrowsDoubleLinkedListException(){
+        public void SetItem_NullItem_ThrowsDoubleLinkedListException() {
             String item = null;
             LinkedNode<String> node = new LinkedNode<>("Node", null, null);
 
@@ -166,7 +166,7 @@ public class LinkedNodeTest {
 
         @Test
         @DisplayName("updates previous to null node")
-        public void SetPrevious_NullNode_UpdatesPreviousNode(){
+        public void SetPrevious_NullNode_UpdatesPreviousNode() {
             LinkedNode<Integer> previous = null;
             LinkedNode<Integer> node = new LinkedNode<>(5, null, null);
 
@@ -178,19 +178,19 @@ public class LinkedNodeTest {
 
         @Test
         @DisplayName("updates previous to non-null node")
-        public void SetPrevious_NonNullNode_UpdatesPreviousNode(){
+        public void SetPrevious_NonNullNode_UpdatesPreviousNode() {
             LinkedNode<Integer> previous = new LinkedNode<>(0, null, null);
             LinkedNode<Integer> node = new LinkedNode<>(5, null, null);
 
             node.setPrevious(previous);
             LinkedNode<Integer> res_prev = node.getPrevious();
 
-            assertEquals(previous,res_prev);
+            assertEquals(previous, res_prev);
         }
 
         @Test
         @DisplayName("updates next to null node")
-        public void SetNext_NullNode_UpdatesNextNode(){
+        public void SetNext_NullNode_UpdatesNextNode() {
             LinkedNode<Integer> next = null;
             LinkedNode<Integer> node = new LinkedNode<>(5, null, null);
 
@@ -202,21 +202,109 @@ public class LinkedNodeTest {
 
         @Test
         @DisplayName("updates next to non-null node")
-        public void SetNext_NonNullNode_UpdatesNextNode(){
+        public void SetNext_NonNullNode_UpdatesNextNode() {
             LinkedNode<Integer> next = new LinkedNode<>(0, null, null);
             LinkedNode<Integer> node = new LinkedNode<>(5, null, null);
 
             node.setNext(next);
             LinkedNode<Integer> res_next = node.getNext();
 
-            assertEquals(next,res_next);
+            assertEquals(next, res_next);
         }
     }
 
-    @Test
-    @DisplayName("checks if it is a first node")
-    public void IsFirstNode_NullPrevious_ReturnsTrue(){
+    @Nested
+    @DisplayName("is first node checker")
+    class FirstNode {
 
+        @Test
+        @DisplayName("returns true if it does not have a previous node")
+        public void IsFirstNode_NullPrevious_ReturnsTrue() {
+            LinkedNode<Integer> previous = null;
+            LinkedNode<Integer> node = new LinkedNode<>(5, previous, null);
+
+            boolean res = node.isFirstNode();
+
+            assertTrue(res);
+        }
+
+        @Test
+        @DisplayName("returns false if it has a previous node")
+        public void IsFirstNode_NonNullPrevious_ReturnsFalse() {
+            LinkedNode<Integer> previous = new LinkedNode<>(0, null, null);
+            LinkedNode<Integer> node = new LinkedNode<>(5, previous, null);
+
+            boolean res = node.isFirstNode();
+
+            assertFalse(res);
+        }
     }
+
+    @Nested
+    @DisplayName("is last node checker")
+    class LastNode {
+
+        @Test
+        @DisplayName("returns true if does not have a next node")
+        public void IsLastNode_NullNext_ReturnsTrue() {
+            LinkedNode<Integer> next = null;
+            LinkedNode<Integer> node = new LinkedNode<>(5, null, next);
+
+            boolean res = node.isLastNode();
+
+            assertTrue(res);
+        }
+
+        @Test
+        @DisplayName("returns false if it has a next node")
+        public void isLastNode_NonNullNext_ReturnsFalse() {
+            LinkedNode<Integer> next = new LinkedNode<>(0, null, null);
+            LinkedNode<Integer> node = new LinkedNode<>(5, null, next);
+
+            boolean res = node.isLastNode();
+
+            assertFalse(res);
+        }
+    }
+
+    @Nested
+    @DisplayName("is not a terminal node checker")
+    class NotATerminalNode {
+
+        @Test
+        @DisplayName("returns false if it is the first node")
+        public void IsNotATerminalNode_IsFirstNode_ReturnsFalse() {
+            LinkedNode<Integer> previous = null;
+            LinkedNode<Integer> node = new LinkedNode<>(5, previous, null);
+
+            boolean res = node.isNotATerminalNode();
+
+            assertFalse(res);
+        }
+
+        @Test
+        @DisplayName("returns false if it is the last node")
+        public void IsNotATerminalNode_IsLastNode_ReturnsFalse() {
+            LinkedNode<Integer> next = null;
+            LinkedNode<Integer> node = new LinkedNode<>(5, null, next);
+
+            boolean res = node.isNotATerminalNode();
+
+            assertFalse(res);
+        }
+
+        @Test
+        @DisplayName("returns true if it not a first nor last node")
+        public void IsNotATerminalNode_HasPreviousHasNext_ReturnsTrue() {
+            LinkedNode<String> previous = new LinkedNode<>("Previous", null, null);
+            LinkedNode<String> next = new LinkedNode<>("Next", null, null);
+            LinkedNode<String> node = new LinkedNode<>("Node", previous, next);
+
+            boolean res = node.isNotATerminalNode();
+
+            assertTrue(res);
+        }
+    }
+
 
 }
