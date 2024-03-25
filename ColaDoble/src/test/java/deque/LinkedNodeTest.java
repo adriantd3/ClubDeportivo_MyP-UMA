@@ -275,7 +275,8 @@ public class LinkedNodeTest {
         @DisplayName("returns false if it is the first node")
         public void IsNotATerminalNode_IsFirstNode_ReturnsFalse() {
             LinkedNode<Integer> previous = null;
-            LinkedNode<Integer> node = new LinkedNode<>(5, previous, null);
+            LinkedNode<Integer> next = new LinkedNode<>(10, null, null);
+            LinkedNode<Integer> node = new LinkedNode<>(5, previous, next);
 
             boolean res = node.isNotATerminalNode();
 
@@ -286,7 +287,8 @@ public class LinkedNodeTest {
         @DisplayName("returns false if it is the last node")
         public void IsNotATerminalNode_IsLastNode_ReturnsFalse() {
             LinkedNode<Integer> next = null;
-            LinkedNode<Integer> node = new LinkedNode<>(5, null, next);
+            LinkedNode<Integer> previous = new LinkedNode<>(10, null, null);
+            LinkedNode<Integer> node = new LinkedNode<>(5, previous, next);
 
             boolean res = node.isNotATerminalNode();
 
@@ -304,6 +306,7 @@ public class LinkedNodeTest {
 
             assertTrue(res);
         }
+
     }
 
 
