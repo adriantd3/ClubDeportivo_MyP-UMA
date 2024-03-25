@@ -1,4 +1,4 @@
-// Auhtors: Adrián Torremocha Doblas
+// Authors: Adrián Torremocha Doblas
 //          Ezequiel Sánchez García
 package deque;
 
