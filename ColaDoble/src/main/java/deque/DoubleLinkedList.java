@@ -1,3 +1,5 @@
+// Auhtors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package deque;
 
 public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
@@ -103,21 +105,5 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     public int size() {
         return this.size;
     }
-
-    /*@Override
-    public String toString() {
-        LinkedNode<T> elem = first;
-        int n = size;
-        String res = "{";
-        while (size > 0) {
-            res += " " + elem.getItem();
-            if (size != 1) {
-                elem = elem.getNext();
-            }
-            size--;
-        }
-        res += " }";
-        return res;
-    }*/
 
 }
