@@ -1,4 +1,4 @@
-package org.mps.deque;
+package deque;
 
 import java.util.Comparator;
 
