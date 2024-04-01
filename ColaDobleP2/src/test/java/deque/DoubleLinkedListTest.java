@@ -332,34 +332,40 @@ public class DoubleLinkedListTest {
 
 
     }
+
     @Nested
     @DisplayName("get")
     class Get {
         @ParameterizedTest
-        @DisplayName("index out of bounds")
+        @DisplayName("throws exception on index out of bounds")
         @CsvSource({
                 "-1",
                 "3",
         })
-        public void Get_IndexOutOfBounds_ReturnsIndexOutOfBoundsException(int index){
+        public void Get_IndexOutOfBounds_ThrowsIndexOutOfBoundsException(int index) {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
             list.append("Three");
 
-            assertThrows(IndexOutOfBoundsException.class, ()->{list.get(index);});
+            assertThrows(IndexOutOfBoundsException.class, () -> {
+                list.get(index);
+            });
         }
 
         @Test
-        @DisplayName("empty list")
-        public void Get_EmptyList_ReturnsIndexOutOfBoundsException(){
+        @DisplayName("throws exception on empty list")
+        public void Get_EmptyList_ThrowsIndexOutOfBoundsException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
-            assertThrows(IndexOutOfBoundsException.class, ()->{list.get(0);});
+
+            assertThrows(IndexOutOfBoundsException.class, () -> {
+                list.get(0);
+            });
         }
 
         @Test
-        @DisplayName("non-empty list")
-        public void Get_NonEmptyList_ReturnsCorrectNodeItem(){
+        @DisplayName("returns element on non-empty list")
+        public void Get_NonEmptyList_ReturnsCorrectNodeItem() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
@@ -371,53 +377,61 @@ public class DoubleLinkedListTest {
             assertEquals(expected, res);
         }
     }
+
     @Nested
     @DisplayName("contains")
     class Contains {
         @Test
-        @DisplayName("null value")
-        public void Contains_NullValue_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on null value")
+        public void Contains_NullValue_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             String value = null;
-            assertThrows(DoubleLinkedQueueException.class,()->{list.contains(value);});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.contains(value);
+            });
         }
 
         @Test
-        @DisplayName("empty list")
-        public void Contains_EmptyList_ReturnsFalse(){
+        @DisplayName("returns false on empty list")
+        public void Contains_EmptyList_ReturnsFalse() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             String value = "One";
-            Boolean res = list.contains(value);
+
+            boolean res = list.contains(value);
 
             assertFalse(res);
-
         }
 
         @ParameterizedTest
-        @DisplayName("existing values")
+        @DisplayName("returns true on existing values")
         @CsvSource({
                 "One",
                 "Two"
         })
-        public void Contains_ExistingValues_ReturnsTrue(String value){
+        public void Contains_ExistingValues_ReturnsTrue(String value) {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
-            Boolean res = list.contains(value);
+
+            boolean res = list.contains(value);
+
             assertTrue(res);
         }
 
         @ParameterizedTest
-        @DisplayName("non-existing values")
+        @DisplayName("returns false on non-existing values")
         @CsvSource({
                 "Three",
                 "Four"
         })
-        public void Contains_NonExistingValues_ReturnsFalse(String value){
+        public void Contains_NonExistingValues_ReturnsFalse(String value) {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
-            Boolean res = list.contains(value);
+
+            boolean res = list.contains(value);
+
             assertFalse(res);
         }
     }
@@ -426,18 +440,22 @@ public class DoubleLinkedListTest {
     @DisplayName("remove")
     class Remove {
         @Test
-        @DisplayName("null value")
-        public void Remove_NullValue_ReturnsDoubleLinkedQueueException(){
+        @DisplayName("throws exception on null value")
+        public void Remove_NullValue_ThrowsDoubleLinkedQueueException() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             String value = null;
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.remove(value);});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.remove(value);
+            });
         }
 
         @Test
-        @DisplayName("empty list")
-        public void Remove_EmptyList_SizeRemainsAtZero(){
+        @DisplayName("on empty list remains size at 0")
+        public void Remove_EmptyList_SizeRemainsAtZero() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             int expected = 0;
+
             list.remove("One");
             int res = list.size();
 
@@ -445,16 +463,17 @@ public class DoubleLinkedListTest {
         }
 
         @ParameterizedTest
-        @DisplayName("existing values")
+        @DisplayName("existing values decreases list size")
         @CsvSource({
                 "One",
                 "Two"
         })
-        public void Remove_ExistingValues_DecreasesListSizeByOne(String value){
+        public void Remove_ExistingValues_DecreasesListSizeByOne(String value) {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
             int expected_size = list.size() - 1;
+
             list.remove(value);
             int res = list.size();
 
@@ -462,16 +481,17 @@ public class DoubleLinkedListTest {
         }
 
         @ParameterizedTest
-        @DisplayName("non-existing values")
+        @DisplayName("non-existing values does not alter list size")
         @CsvSource({
                 "Three",
                 "Four"
         })
-        public void Remove_NonExistingValues_ListSizeRemainsTheSame(String value){
+        public void Remove_NonExistingValues_ListSizeRemainsTheSame(String value) {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
             int expected_size = list.size();
+
             list.remove(value);
             int res = list.size();
 
@@ -479,25 +499,30 @@ public class DoubleLinkedListTest {
         }
 
         @Test
-        @DisplayName("non-terminal node")
-        public void Remove_NonTerminalNode_UpdatesPreviousAndNextNode(){
+        @DisplayName("non-terminal node updates references")
+        public void Remove_NonTerminalNode_UpdatesPreviousAndNextNode() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.append("Two");
             list.append("Three");
+
             String second_item = list.get(1);
             list.remove("Two");
             String new_second_item = list.get(1);
+
             assertNotEquals(second_item, new_second_item);
         }
 
         @Test
-        @DisplayName("list with a single item")
-        public void Remove_ListWithASingleItem_BecomesAnEmptyList(){
+        @DisplayName("on list with a single item turns empty")
+        public void Remove_ListWithASingleItem_BecomesAnEmptyList() {
             DoubleLinkedList<String> list = new DoubleLinkedList<>();
             list.append("One");
             list.remove("One");
-            assertThrows(DoubleLinkedQueueException.class, ()->{list.first();});
+
+            assertThrows(DoubleLinkedQueueException.class, () -> {
+                list.first();
+            });
         }
     }
 
@@ -506,48 +531,53 @@ public class DoubleLinkedListTest {
     class Sort {
 
         @Test
-        @DisplayName("list size is smaller than two")
-        public void Sort_ListSmallerThanTwo_DoesNothing(){
+        @DisplayName("on list whose size is smaller than two")
+        public void Sort_ListSmallerThanTwo_DoesNothing() {
             DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
             list.append(1);
             Integer expected = list.get(0);
             Comparator<Integer> comparator = Comparator.naturalOrder();
+
             list.sort(comparator);
             Integer res = list.get(0);
 
             assertEquals(expected, res);
 
         }
+
         @Test
-        @DisplayName("sorts in natural order")
-        public void Sort_NaturalOrder_SortsTheList(){
+        @DisplayName("in natural order")
+        public void Sort_NaturalOrder_SortsTheList() {
             DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
             list.append(3);
             list.append(4);
             list.append(1);
             list.append(2);
             Comparator<Integer> comparator = Comparator.naturalOrder();
+
             list.sort(comparator);
-            for (int i=0; i< list.size(); i++){
-                assertEquals(i+1,list.get(i));
+
+            for (int i = 0; i < list.size(); i++) {
+                assertEquals(i + 1, list.get(i));
             }
 
         }
 
         @Test
-        @DisplayName("sorts in reverse order")
-        public void Sort_ReverseOrder_SortsTheList(){
+        @DisplayName("in reverse order")
+        public void Sort_ReverseOrder_SortsTheList() {
             DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
             list.append(3);
             list.append(4);
             list.append(1);
             list.append(2);
             Comparator<Integer> comparator = Comparator.reverseOrder();
-            list.sort(comparator);
-            for (int i=0; i< list.size(); i++){
-                assertEquals(list.size()- i,list.get(i));
-            }
 
+            list.sort(comparator);
+
+            for (int i = 0; i < list.size(); i++) {
+                assertEquals(list.size() - i, list.get(i));
+            }
         }
     }
 }
