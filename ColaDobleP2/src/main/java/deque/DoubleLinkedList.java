@@ -165,25 +165,18 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
     }
 
     private void removeNode(LinkedNode<T> node) {
-        if (node.isFirstNode() && node.isLastNode()) {
-            first = null;
-            last = null;
-        } else if (node.isFirstNode()) {
-            first = first.getNext();
-            first.setPrevious(null);
+        if (node.isFirstNode()) {
+            this.deleteFirst();
         } else if (node.isLastNode()) {
-            last = last.getPrevious();
-            last.setNext(null);
+            this.deleteLast();
         } else {
             //Is not a terminal node
             LinkedNode<T> prev = node.getPrevious();
             LinkedNode<T> next = node.getNext();
             prev.setNext(next);
             next.setPrevious(prev);
+            size--;
         }
-
-        //Update list size
-        size--;
     }
 
     @Override
