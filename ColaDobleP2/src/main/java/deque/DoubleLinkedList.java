@@ -216,6 +216,7 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         } while (swapped);
     }
 
+    /*
     @Override
     public String toString() {
         LinkedNode<T> elem = first;
@@ -231,5 +232,6 @@ public class DoubleLinkedList<T> implements DoubleLinkedQueue<T> {
         res += " }";
         return res;
     }
+     */
 
 }
