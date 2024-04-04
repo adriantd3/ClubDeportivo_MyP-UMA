@@ -1,7 +1,7 @@
 package org.mps.ronqi2;
 
 
-public class ronQI2Silvertest {
+public class ronQI2SilverTest {
 
     
     /*
