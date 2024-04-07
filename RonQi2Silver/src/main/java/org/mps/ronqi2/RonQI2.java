@@ -1,3 +1,5 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package org.mps.ronqi2;
 
 import org.mps.dispositivo.Dispositivo;
@@ -33,7 +35,9 @@ public abstract class RonQI2 {
     */
     public boolean reconectar(){
         boolean result = false;
-        if (!disp.estaConectado()){
+        // Fix: antes se hacia !disp.estaConectado() cuando en la clase tenemos un metodo estaConectado
+        // que justo hace esa comprobacion.
+        if (!estaConectado()){
             result = disp.conectarSensorPresion() && disp.conectarSensorSonido();
         }
         return result;

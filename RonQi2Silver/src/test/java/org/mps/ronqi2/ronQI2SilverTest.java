@@ -1,5 +1,6 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package org.mps.ronqi2;
-
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
