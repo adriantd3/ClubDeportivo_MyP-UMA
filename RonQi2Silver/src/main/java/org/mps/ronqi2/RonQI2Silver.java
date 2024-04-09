@@ -25,6 +25,9 @@ public class RonQI2Silver extends RonQI2{
      * contenedores.
     */
     public void obtenerNuevaLectura(){
+        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
+            throw new RuntimeException("El dispositivo no puede ser nulo");
+        }
         lecturasP.add(disp.leerSensorPresion());
         if(lecturasP.size()>numLecturas){
             lecturasP.remove(0); 
@@ -44,6 +47,9 @@ public class RonQI2Silver extends RonQI2{
     */
     @Override
     public boolean evaluarApneaSuenyo() {
+        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
+            throw new RuntimeException("El dispositivo no puede ser nulo");
+        }
         boolean resultado;
         Double avgP = lecturasP.stream()
                 .mapToDouble(d -> d)

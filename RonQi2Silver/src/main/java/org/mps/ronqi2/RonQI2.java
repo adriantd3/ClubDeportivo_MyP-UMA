@@ -12,6 +12,9 @@ public abstract class RonQI2 {
     */
     public boolean inicializar(){
         boolean result = false;
+        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
+            throw new RuntimeException("El dispositivo no puede ser nulo");
+        }
         if (disp.conectarSensorPresion()){
             boolean confPresion = disp.configurarSensorPresion();
             if (disp.conectarSensorSonido()){
@@ -35,6 +38,9 @@ public abstract class RonQI2 {
     */
     public boolean reconectar(){
         boolean result = false;
+        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
+            throw new RuntimeException("El dispositivo no puede ser nulo");
+        }
         // Fix: antes se hacia !disp.estaConectado() cuando en la clase tenemos un metodo estaConectado
         // que justo hace esa comprobacion.
         if (!estaConectado()){
@@ -52,6 +58,9 @@ public abstract class RonQI2 {
      * Lee y almacena las lecturas de presion y sonido del dispositivo.
     */
     public boolean estaConectado(){
+        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
+            throw new RuntimeException("El dispositivo no puede ser nulo");
+        }
         return disp.estaConectado();
     }    
 }
