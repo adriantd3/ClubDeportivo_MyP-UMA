@@ -47,9 +47,6 @@ public class RonQI2Silver extends RonQI2{
     */
     @Override
     public boolean evaluarApneaSuenyo() {
-        if (disp == null){ // Lanza una excepcion si el dispositivo es nulo
-            throw new RuntimeException("El dispositivo no puede ser nulo");
-        }
         boolean resultado;
         Double avgP = lecturasP.stream()
                 .mapToDouble(d -> d)

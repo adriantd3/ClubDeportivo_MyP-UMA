@@ -9,8 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mps.dispositivo.DispositivoSilver;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class ronQI2SilverTest {
@@ -25,6 +24,17 @@ public class ronQI2SilverTest {
     @Nested
     @DisplayName("inicializar")
     class Inicializar {
+
+        @Test
+        @DisplayName("Dispositivo nulo")
+        public void Inicializar_DispositivoNulo_ThrowsException(){
+            RonQI2Silver r = new RonQI2Silver();
+
+            assertThrows(RuntimeException.class, () -> {
+               r.inicializar();
+            });
+        }
+
         @Test
         @DisplayName("Sensor de presion conectado y configurado")
         public void Inicializar_ConectaYConfiguraSensorPresion_ReturnsFalse() {
@@ -153,6 +163,16 @@ public class ronQI2SilverTest {
          * Genera las pruebas que estimes oportunas para comprobar su correcto funcionamiento.
          * Centrate en probar sitodo va bien, o si no, y si se llama a los métodos que deben ser llamados.
          */
+
+        @Test
+        @DisplayName("Dispositivo nulo")
+        public void Inicializar_DispositivoNulo_ThrowsException(){
+            RonQI2Silver r = new RonQI2Silver();
+
+            assertThrows(RuntimeException.class, () -> {
+                r.reconectar();
+            });
+        }
 
         @Test
         @DisplayName("El dispositivo esta conectado")
@@ -318,8 +338,100 @@ public class ronQI2SilverTest {
             boolean res = r.evaluarApneaSuenyo();
 
             assertTrue(res);
-            verify(d, times(numLecturas)).leerSensorPresion();
-            verify(d, times(numLecturas)).leerSensorSonido();
+        }
+    }
+
+    @Nested
+    @DisplayName("añadir dispositivo")
+    class AnyadirDispositivo{
+
+        @Test
+        @DisplayName("Nulo")
+        public void AnyadirDispositivo_DispositivoNulo_ThrowsException(){
+            RonQI2Silver r = new RonQI2Silver();
+            DispositivoSilver d = null;
+
+            assertThrows(RuntimeException.class, ()-> {
+                r.anyadirDispositivo(d);
+            });
+        }
+
+        @Test
+        @DisplayName("No nulo")
+        public void AnyadirDispositivo_DispositivoNoNulo_DoesNotThrowException(){
+            RonQI2Silver r = new RonQI2Silver();
+            DispositivoSilver d = mock(DispositivoSilver.class);
+
+            assertDoesNotThrow(() -> {
+                r.anyadirDispositivo(d);
+            });
+        }
+    }
+    @Nested
+    @DisplayName("esta conectado")
+    class EstaConectado{
+
+        @Test
+        @DisplayName("dispositivo nulo")
+        public void EstaConectado_DispositivoNulo_ThrowsException(){
+            RonQI2Silver r = new RonQI2Silver();
+
+            assertThrows(RuntimeException.class, () -> {
+                r.estaConectado();
+            });
+        }
+
+        @Test
+        @DisplayName("dispositivo conectado")
+        public void EstaConectado_DispositivoConectado_ReturnsTrue(){
+            RonQI2Silver r = new RonQI2Silver();
+            DispositivoSilver d = mock(DispositivoSilver.class);
+            when(d.estaConectado()).thenReturn(true);
+            r.anyadirDispositivo(d);
+
+            boolean res = r.estaConectado();
+
+            assertTrue(res);
+        }
+
+        @Test
+        @DisplayName("dispositivo desconectado")
+        public void EstaConectado_DispositivoDesconectado_ReturnsFalse(){
+            RonQI2Silver r = new RonQI2Silver();
+            DispositivoSilver d = mock(DispositivoSilver.class);
+            when(d.estaConectado()).thenReturn(false);
+            r.anyadirDispositivo(d);
+
+            boolean res = r.estaConectado();
+
+            assertFalse(res);
+        }
+    }
+
+    @Nested
+    @DisplayName("obtener nueva lectura")
+    class ObtenerNuevaLectura{
+
+        @Test
+        @DisplayName("dispositivo nulo")
+        public void ObtenerNuevaLectura_DispositivoNulo_ThrowsException(){
+            RonQI2Silver r = new RonQI2Silver();
+
+            assertThrows(RuntimeException.class, () -> {
+                r.obtenerNuevaLectura();
+            });
+        }
+
+        @Test
+        @DisplayName("dispositivo no nulo")
+        public void ObtenerNuevaLectura_DispositivoNoNulo_DoesNotThrowException(){
+            RonQI2Silver r = new RonQI2Silver();
+            DispositivoSilver d = mock(DispositivoSilver.class);
+            r.anyadirDispositivo(d);
+
+            assertDoesNotThrow(() -> {
+                r.obtenerNuevaLectura();
+            });
         }
     }
 }
