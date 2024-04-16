@@ -56,9 +56,11 @@ public class EvolutionaryAlgorithm {
 
         if (population != null && population.length > 0 && population[0]!=null && population[0].length>0) {
             // Creamos una nueva población para los descendientes
+            //FIX: tamaño del subarray deberia ser population[0].length?
             int[][] offspringPopulation = new int[population.length][population.length];
 
             // Aplicamos operadores de selección y cruce para generar descendientes
+            // FIX: si el tamaño de population es impar dara indexoutofbounds
             for (int i = 0; i < population.length; i += 2) {
                 // Seleccionamos dos individuos de la población actual
                 int[] parent1 = selectionOperator.select(population[i]);
