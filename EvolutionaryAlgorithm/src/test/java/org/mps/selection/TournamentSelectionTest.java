@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class TournamentSelectionTest {
 
     @Nested
-    @DisplayName("constructor")
+    @DisplayName("when new")
     class Constructor {
         @Test
         @DisplayName("invalid tournament size")

@@ -76,4 +76,28 @@ public class EvolutionaryAlgorithmTest {
             }
         }
     }
+
+    @Nested
+    @DisplayName("optimize method")
+    class Optimize {
+
+    }
+
+    @Nested
+    @DisplayName("Selection operator")
+    class SelectionOperator {
+
+    }
+
+    @Nested
+    @DisplayName("Mutation operator")
+    class MutationOperator {
+
+    }
+
+    @Nested
+    @DisplayName("Crossover operator")
+    class CrossoverOperator {
+
+    }
 }
