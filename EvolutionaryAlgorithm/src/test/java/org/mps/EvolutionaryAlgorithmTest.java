@@ -1,3 +1,5 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package org.mps;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -212,7 +214,7 @@ public class EvolutionaryAlgorithmTest {
             assertEquals(mutation,evolutionaryAlgorithm.getMutationOperator());
         }
 
-        @DisplayName("null mutation operator")
+        @DisplayName("null crossover operator")
         @Test
         public void SetCrossover_NullCrossoverOperator_ThrowsEvolutionaryAlgorithmException() {
             OnePointCrossover crossover = null;
@@ -222,7 +224,7 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("non null mutation operator")
+        @DisplayName("non null crossover operator")
         @Test
         public void SetCrossover_NonNullCrossoverOperator_UpdatesOperator() throws EvolutionaryAlgorithmException {
             OnePointCrossover crossover = new OnePointCrossover();
