@@ -1,8 +1,12 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package org.mps;
 
 import org.mps.crossover.CrossoverOperator;
 import org.mps.mutation.MutationOperator;
 import org.mps.selection.SelectionOperator;
+
+import java.util.Arrays;
 
 /**
  * La clase EvolutionaryAlgorithm representa un algoritmo evolutivo básico que
@@ -48,7 +52,10 @@ public class EvolutionaryAlgorithm {
         return mutationOperator;
     }
 
-    public void setMutationOperator(MutationOperator mutationOperator) {
+    public void setMutationOperator(MutationOperator mutationOperator) throws EvolutionaryAlgorithmException {
+        if(mutationOperator == null){
+            throw new EvolutionaryAlgorithmException();
+        }
         this.mutationOperator = mutationOperator;
     }
 
@@ -56,9 +63,11 @@ public class EvolutionaryAlgorithm {
 
         if (population != null && population.length > 0 && population[0]!=null && population[0].length>0) {
             // Creamos una nueva población para los descendientes
-            int[][] offspringPopulation = new int[population.length][population.length];
+            //FIX: tamaño del subarray deberia ser population[0].length?
+            int[][] offspringPopulation = new int[population.length][population[0].length];
 
             // Aplicamos operadores de selección y cruce para generar descendientes
+            // FIX: si el tamaño de population es impar dara indexoutofbounds
             for (int i = 0; i < population.length; i += 2) {
                 // Seleccionamos dos individuos de la población actual
                 int[] parent1 = selectionOperator.select(population[i]);
@@ -106,7 +115,10 @@ public class EvolutionaryAlgorithm {
         return this.selectionOperator;
     }
 
-    public void setSelectionOperator(SelectionOperator selectionOperator) {
+    public void setSelectionOperator(SelectionOperator selectionOperator) throws EvolutionaryAlgorithmException {
+        if(selectionOperator == null){
+            throw new EvolutionaryAlgorithmException();
+        }
         this.selectionOperator = selectionOperator;
     }
 
@@ -114,7 +126,10 @@ public class EvolutionaryAlgorithm {
         return this.crossoverOperator;
     }
 
-    public void setCrossoverOperator(CrossoverOperator crossoverOperator) {
+    public void setCrossoverOperator(CrossoverOperator crossoverOperator) throws EvolutionaryAlgorithmException {
+        if(crossoverOperator == null){
+            throw new EvolutionaryAlgorithmException();
+        }
         this.crossoverOperator = crossoverOperator;
     }
 

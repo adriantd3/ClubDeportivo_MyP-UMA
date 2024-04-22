@@ -1,3 +1,5 @@
+// Authors: Adrián Torremocha Doblas
+//          Ezequiel Sánchez García
 package org.mps;
 
 public class EvolutionaryAlgorithmException  extends Exception{
