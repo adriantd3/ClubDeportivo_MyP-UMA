@@ -25,7 +25,7 @@ public class OnePointCrossoverTest {
     @Nested
     class Crossover {
 
-        @DisplayName("parent1 null")
+        @DisplayName("parent1 null throws exception")
         @Test
         public void Crossover_Parent1Null_ThrowsEvolutionaryAlgorithmException() {
             int[] parent1 = null;
@@ -39,7 +39,7 @@ public class OnePointCrossoverTest {
             }
         }
 
-        @DisplayName("parent2 null")
+        @DisplayName("parent2 null throws exception")
         @Test
         public void Crossover_Parent2Null_ThrowsEvolutionaryAlgorithmException() {
             int[] parent1 = new int[]{1, 2, 3, 4};
@@ -53,7 +53,7 @@ public class OnePointCrossoverTest {
             }
         }
 
-        @DisplayName("parent1 length 0")
+        @DisplayName("parent1 length 0 throws exception")
         @Test
         public void Crossover_Parent1Length0_ThrowsEvolutionaryAlgorithmException() {
             int[] parent1 = new int[0];
@@ -68,7 +68,7 @@ public class OnePointCrossoverTest {
             }
         }
 
-        @DisplayName("parents with different size")
+        @DisplayName("parents with different size throws exception")
         @Test
         public void Crossover_DifferentSizeParents_ThrowsEvolutionaryAlgorithmException() {
             int[] parent1 = new int[]{1, 2, 3};
@@ -83,7 +83,7 @@ public class OnePointCrossoverTest {
             }
         }
 
-        @DisplayName("offspring size is correct")
+        @DisplayName("valid arrays do not alter size")
         @Test
         public void Crossover_ParametersInRange_ReturnsCorrectSizeArray() {
             int[] parent1 = new int[]{1, 2, 3, 4};
@@ -109,7 +109,7 @@ public class OnePointCrossoverTest {
             try {
                 int[][] offspring = opcrossover.crossover(parent1, parent2);
 
-                //Shuffle is correct if we find elements of the first array in the second
+                //Shuffle is correct if we find elements of the second array in the first
                 boolean shuffled = false;
                 for (int i = 0; i < offspring[0].length; i++) {
                     if (offspring[0][i] == 2) {

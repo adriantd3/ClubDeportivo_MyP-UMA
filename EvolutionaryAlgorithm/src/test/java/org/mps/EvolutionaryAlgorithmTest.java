@@ -22,7 +22,7 @@ public class EvolutionaryAlgorithmTest {
     @Nested
     @DisplayName("when new")
     class Constructor {
-        @DisplayName("crossover operator null")
+        @DisplayName("null crossover operator throws exception")
         @Test
         public void Constructor_CrossoverOperatorNull_ThrowsEvolutionaryAlgorithmException() {
             OnePointCrossover crossover = null;
@@ -38,7 +38,7 @@ public class EvolutionaryAlgorithmTest {
 
         }
 
-        @DisplayName("mutation operator null")
+        @DisplayName("null mutation operator throws exception")
         @Test
         public void Constructor_MutationOperatorNull_ThrowsEvolutionaryAlgorithmException() {
             OnePointCrossover crossover = new OnePointCrossover();
@@ -54,7 +54,7 @@ public class EvolutionaryAlgorithmTest {
 
         }
 
-        @DisplayName("selection operator null")
+        @DisplayName("null selection operator throws exception")
         @Test
         public void Constructor_SelectionOperatorNull_ThrowsEvolutionaryAlgorithmException() {
             OnePointCrossover crossover = new OnePointCrossover();
@@ -66,7 +66,7 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("Non null parameters")
+        @DisplayName("Non null parameters creates object")
         @Test
         public void Constructor_NonNullParameters_DoesNotThrowEvolutionaryAlgorithmException() {
             OnePointCrossover crossover = new OnePointCrossover();
@@ -99,7 +99,7 @@ public class EvolutionaryAlgorithmTest {
             }
         }
 
-        @DisplayName("null population")
+        @DisplayName("null population throws exception")
         @Test
         public void Optimize_NullPopulation_ThrowsEvolutionaryAlgorithmException() {
             int [][] population = null;
@@ -109,7 +109,7 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("empty population")
+        @DisplayName("empty population throws exception")
         @Test
         public void Optimize_EmptyPopulation_ThrowsEvolutionaryAlgorithmException(){
             int [][] population = new int[0][0];
@@ -119,7 +119,7 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("null population subarray")
+        @DisplayName("null population subarray throws exception")
         @Test
         public void Optimize_NullPopulationSubarray_ThrowsEvolutionaryAlgorithmException(){
             int [][] population = new int[1][];
@@ -129,7 +129,7 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("empty population subarray")
+        @DisplayName("empty population subarray throws exception")
         @Test
         public void Optimize_EmptyPopulationSubarray_ThrowsEvolutionaryAlgorithmException(){
             int [][] population = new int[1][0];
@@ -139,7 +139,22 @@ public class EvolutionaryAlgorithmTest {
             });
         }
 
-        @DisplayName("returns altered population")
+        @DisplayName("valid parameters do not alter size")
+        @Test
+        public void Optimize_ValidParameters_DoNotAlterSize() throws EvolutionaryAlgorithmException {
+            int [][] population = new int[][] {{7,7,7,7},{8,8,8,8}};
+            int expected_columns = population.length;
+            int expected_rows = population[0].length;
+
+            population = evolutionaryAlgorithm.optimize(population);
+            int res_columns = population.length;
+            int res_rows = population[0].length;
+
+            assertEquals(expected_columns, res_columns);
+            assertEquals(expected_rows, res_rows);
+        }
+
+        @DisplayName("valid parameters return altered population")
         @Test
         public void Optimize_InRangeParameters_AltersPopulation() throws EvolutionaryAlgorithmException {
             int [][] population = new int[][] {{7,7,7,7},{8,8,8,8}};

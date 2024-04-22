@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mps.EvolutionaryAlgorithmException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Tournament Selection")
 public class TournamentSelectionTest {
@@ -32,7 +31,7 @@ public class TournamentSelectionTest {
         @Test
         @DisplayName("null array throws exception")
         public void Select_NullArray_ThrowsEvolutionaryAlgorithmException() throws EvolutionaryAlgorithmException {
-            org.mps.selection.TournamentSelection tournamentSelection = new org.mps.selection.TournamentSelection(2);
+            TournamentSelection tournamentSelection = new TournamentSelection(2);
             int [] population = null;
 
             assertThrows(EvolutionaryAlgorithmException.class, ()->{
@@ -43,7 +42,7 @@ public class TournamentSelectionTest {
         @Test
         @DisplayName("empty array throws exception")
         public void Select_EmptyArray_ThrowsEvolutionaryAlgorithmException() throws EvolutionaryAlgorithmException {
-            org.mps.selection.TournamentSelection tournamentSelection = new org.mps.selection.TournamentSelection(2);
+            TournamentSelection tournamentSelection = new TournamentSelection(2);
             int [] population = new int[] {};
 
             assertThrows(EvolutionaryAlgorithmException.class, ()->{
@@ -54,7 +53,7 @@ public class TournamentSelectionTest {
         @Test
         @DisplayName("valid array does not change array size")
         public void Select_ValidArray_ArraySizeIsNotChanged() throws EvolutionaryAlgorithmException {
-            org.mps.selection.TournamentSelection tournamentSelection = new org.mps.selection.TournamentSelection(2);
+            TournamentSelection tournamentSelection = new TournamentSelection(2);
             int [] population = new int[] {1,2,3,4};
             int expected_length = 4;
 
@@ -62,8 +61,6 @@ public class TournamentSelectionTest {
 
             assertEquals(expected_length, res);
         }
-
-
 
     }
 }

@@ -17,23 +17,23 @@ public class SwapMutationTest {
     class SwapMutation {
         @Test
         @DisplayName("null array throws exception")
-        public void Mutate_NullArray_ThrowsEvolutionaryAlgorithmException(){
+        public void Mutate_NullArray_ThrowsEvolutionaryAlgorithmException() {
             org.mps.mutation.SwapMutation swapMutation = new org.mps.mutation.SwapMutation();
-            int [] individual = null;
+            int[] individual = null;
 
-            assertThrows(EvolutionaryAlgorithmException.class, ()->{
-                int [] res = swapMutation.mutate(individual);
+            assertThrows(EvolutionaryAlgorithmException.class, () -> {
+                int[] res = swapMutation.mutate(individual);
             });
         }
 
         @Test
         @DisplayName("empty array throws exception")
-        public void Mutate_EmptyArray_ThrowsEvolutionaryAlgorithmException(){
+        public void Mutate_EmptyArray_ThrowsEvolutionaryAlgorithmException() {
             org.mps.mutation.SwapMutation swapMutation = new org.mps.mutation.SwapMutation();
-            int [] individual = new int[] {};
+            int[] individual = new int[]{};
 
-            assertThrows(EvolutionaryAlgorithmException.class, ()->{
-                int [] res = swapMutation.mutate(individual);
+            assertThrows(EvolutionaryAlgorithmException.class, () -> {
+                int[] res = swapMutation.mutate(individual);
             });
         }
 
@@ -41,18 +41,15 @@ public class SwapMutationTest {
         @DisplayName("valid array does not change array size")
         public void Mutate_ValidArray_ArraySizeIsNotChanged() throws EvolutionaryAlgorithmException {
             org.mps.mutation.SwapMutation swapMutation = new org.mps.mutation.SwapMutation();
-            int [] individual = new int[] {1,2,3,4};
+            int[] individual = new int[]{1, 2, 3, 4};
             int expected_length = 4;
 
-            int [] mutated = swapMutation.mutate(individual);
+            int[] mutated = swapMutation.mutate(individual);
 
             int res = mutated.length;
 
-            assertEquals(expected_length,res);
+            assertEquals(expected_length, res);
         }
-
-
-
     }
 
 }

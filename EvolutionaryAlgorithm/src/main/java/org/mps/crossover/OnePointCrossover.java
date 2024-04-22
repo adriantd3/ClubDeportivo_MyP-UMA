@@ -38,6 +38,7 @@ public class OnePointCrossover implements CrossoverOperator {
         int[][] offspring = null;
         if (parent1 != null && parent2 != null && parent1.length > 0 && parent1.length == parent2.length) {
             offspring = new int[2][parent1.length];
+            //FIX: SI el array es de tamaño 1, hara random(0), causando un error.
             int crossoverPoint = random.nextInt(parent1.length - 1) + 1; // Punto de cruce aleatorio
             // Realizar el cruce en el punto seleccionado
             for (int i = 0; i < crossoverPoint; i++) {

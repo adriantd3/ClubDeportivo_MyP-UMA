@@ -84,9 +84,6 @@ public class EvolutionaryAlgorithm {
                 offspringPopulation[i] = mutationOperator.mutate(offspringPopulation[i]);
             }
 
-            System.out.println(Arrays.toString(offspringPopulation[0]));
-            System.out.println(Arrays.toString(offspringPopulation[1]));
-
             // Reemplazo
             for (int i = 0; i < population.length; i++) {
                 if (better(offspringPopulation[i], population[i])) {
