@@ -1,13 +1,46 @@
+/*
+    Autores: Adrián Torremocha Doblas y Ezequiel Sánchez García
+ */
+
 package org.mps.boundedqueue;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.*;
+
+/*
+Hemos realizado una serie de pruebas unitarias para la clase `ArrayBoundedQueue`.
+Las pruebas están organizadas en clases anidadas.:
+
+1. Constructor: Verificamos que el constructor lanza una excepción si se proporciona una capacidad no positiva y
+que crea un objeto vacío si se proporciona una capacidad positiva.
+
+2. Get: Pruebas para el método `get()`, verificando que lanza una excepción si la cola está vacía, que el
+tamaño de la cola disminuye después de llamar a `get()`, que `get()` devuelve el primer elemento de la cola y que el
+índice del primer elemento se actualiza correctamente.
+
+3. Put: Pruebas para el método `put()`, verificando que lanza una excepción si la cola está llena o si el valor
+proporcionado es nulo, que el tamaño de la cola aumenta después de llamar a `put()`, y que los índices del
+primer y último elemento se actualizan correctamente.
+
+4. Getters: Pruebas para los métodos getter `getFirst()`, `getLast()` y `size()`, verificando que devuelven
+los valores correctos.
+
+5. Boolean Methods: Pruebas para los métodos `isFull()` e `isEmpty()`, verificando que devuelven
+los valores correctos en función de si la cola está llena o vacía.
+
+6. Iterator: Pruebas para el iterador de la clase, verificando que `hasNext()` devuelve los
+valores correctos, que se lanza una excepción si se llama a `next()` cuando no hay elementos siguientes, y
+que `next()` devuelve el elemento correcto. También verificamos que el iterador recorra correctamente la
+cola de manera circular.
+
+Cada una de estas pruebas está diseñada para asegurar que la clase `ArrayBoundedQueue`
+funcione correctamente tanto en casos normales como en casos en los que se pone se utiliza su propiedad circular.
+ */
 
 @DisplayName("An ArrayBoundedQueue")
 public class ArrayBoundedQueueTest {
@@ -157,9 +190,9 @@ public class ArrayBoundedQueueTest {
         public void Put_OnRangeParameters_UpdatesLastReference(){
             ArrayBoundedQueue queue = new ArrayBoundedQueue(3);
             queue.put(1);
+            queue.put(2);
             int expected_last = 2;
 
-            queue.put(2);
             int actual_last = queue.getLast();
 
             assertThat(actual_last).isEqualTo(expected_last);
@@ -169,9 +202,9 @@ public class ArrayBoundedQueueTest {
         @DisplayName("increases queue size")
         public void Put_OnRangeParameters_IncreasesQueueSize(){
             ArrayBoundedQueue queue = new ArrayBoundedQueue(3);
+            queue.put(1);
             int expected_size = 1;
 
-            queue.put(1);
             int actual_size = queue.size();
 
             assertThat(actual_size).isEqualTo(expected_size);
@@ -195,7 +228,6 @@ public class ArrayBoundedQueueTest {
 
             assertThat(actual_first).isEqualTo(expected_first);
             assertThat(actual_last).isEqualTo(expected_last);
-
         }
 
     }
@@ -349,11 +381,33 @@ public class ArrayBoundedQueueTest {
 
         @Test
         @DisplayName("iterating over the list")
-        public void Iterator_IteratesTheQueue(){
+        public void Iterator_OnRangeParameters_IteratesTheQueue(){
             ArrayBoundedQueue queue = new ArrayBoundedQueue(3);
             queue.put(1);
             queue.put(2);
             queue.put(3);
+            java.util.Iterator iterator = queue.iterator();
+
+            int i = 1;
+            while (iterator.hasNext()) {
+                int elem = (int) iterator.next();
+                assertThat(elem).isEqualTo(i);
+                i++;
+            }
+        }
+
+        @Test
+        @DisplayName("iterates over the list in a circular way")
+        public void Iterator_NonLinearQueue_IteratesInACircularWay(){
+            ArrayBoundedQueue queue = new ArrayBoundedQueue(3);
+            queue.put(5);
+            queue.put(5);
+            queue.put(1);
+            queue.get();
+            queue.get();
+            queue.put(2);
+            queue.put(3);
+
             java.util.Iterator iterator = queue.iterator();
 
             int i = 1;
