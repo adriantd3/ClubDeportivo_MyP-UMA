@@ -27,7 +27,7 @@ public class MedicoControllerIT extends AbstractIntegration {
     private Medico medico;
 
     @BeforeEach
-    public void init() throws Exception {
+    public void setUp() throws Exception {
         medico = new Medico();
         medico.setDni("12345678V");
         medico.setNombre("Pedro");
@@ -44,7 +44,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("create a new medico and obtain it by a get request")
-    void SaveMedico_NonExistingMedico_isObtainedWithGet() throws Exception {
+    public void SaveMedico_NonExistingMedico_isObtainedWithGet() throws Exception {
 
         // Creamos el medico
         createMedico();
@@ -62,7 +62,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("update an existing medico")
-    void UpdateMedico_ExistingMedico_isObtainedWithGet() throws Exception {
+    public void UpdateMedico_ExistingMedico_isObtainedWithGet() throws Exception {
 
         createMedico();
 
@@ -91,7 +91,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("delete an existing medico")
-    void DeleteMedico_ExistingMedico_isNotObtainedWithGet() throws Exception {
+    public void DeleteMedico_ExistingMedico_isNotObtainedWithGet() throws Exception {
         // Creamos el medico
         createMedico();
 
@@ -109,7 +109,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("delete a non-existing medico")
-    void DeleteMedico_NonExistingMedico_isInternalServerError() throws Exception {
+    public void DeleteMedico_NonExistingMedico_isInternalServerError() throws Exception {
         // Creamos el medico
         createMedico();
 
@@ -124,7 +124,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("retrieve an existing medico by their DNI")
-    void GetMedicoByDni_ExistingMedico_isObtainedWithGet() throws Exception {
+    public void GetMedicoByDni_ExistingMedico_isObtainedWithGet() throws Exception {
 
         createMedico();
 
@@ -140,7 +140,7 @@ public class MedicoControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("retrieve a non-existing medico by their DNI")
-    void GetMedicoByDni_NonExistingMedico_isNotFound() throws Exception {
+    public void GetMedicoByDni_NonExistingMedico_isNotFound() throws Exception {
 
         String non_existing_dni = "1111111K";
 
