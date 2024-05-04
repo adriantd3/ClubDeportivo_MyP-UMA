@@ -103,8 +103,6 @@ public class MedicoControllerIT extends AbstractIntegration {
         this.mockMvc.perform(get("/medico/" + medico.getId()))
                 .andDo(print())
                 .andExpect(status().isInternalServerError());
-
-
     }
 
     @Test
@@ -119,7 +117,6 @@ public class MedicoControllerIT extends AbstractIntegration {
         this.mockMvc.perform(delete("/medico/" + invalid_id))
                 .andDo(print())
                 .andExpect(status().isInternalServerError());
-
     }
 
     @Test

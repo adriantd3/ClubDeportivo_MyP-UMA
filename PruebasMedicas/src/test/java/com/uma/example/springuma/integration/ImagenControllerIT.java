@@ -40,11 +40,13 @@ public class ImagenControllerIT extends AbstractIntegration {
     private Paciente paciente;
     private Medico medico;
 
-    // After dependency injection
+    private final String HEALTHY_IMAGE = "./src/test/resources/healthy.png";
+    private final String UNHEALTHY_IMAGE = "./src/test/resources/no_healthy.png";
+
     @PostConstruct
     public void init() {
         client = WebTestClient.bindToServer().baseUrl("http://localhost:"+port)
-                .responseTimeout(Duration.ofMillis(30000)).build();
+                .responseTimeout(Duration.ofMillis(15000)).build();
     }
 
     @BeforeEach
@@ -84,9 +86,9 @@ public class ImagenControllerIT extends AbstractIntegration {
                 .expectBody().returnResult();
     }
 
-    private String createImagen() {
+    private String createImagen(String image) {
         // Insertamos la imagen asociada a nuestro paciente en la base de datos
-        File uploadFile = new File("./src/test/resources/healthy.png");
+        File uploadFile = new File(image);
 
         LinkedMultiValueMap<String, Object> parts = new LinkedMultiValueMap<>();
         parts.add("image", new FileSystemResource(uploadFile));
@@ -109,24 +111,20 @@ public class ImagenControllerIT extends AbstractIntegration {
     @Test
     @DisplayName("Subimos una nueva imagen")
     public void UploadImage_ValidImage_ReturnsGoodResponse() {
-
-        // Insertamos el medico
         createMedico();
-        // Insertamos el paciente
         createPaciente();
-        // Subimos la imagen
-        String result = createImagen();
+
+        String result = createImagen(HEALTHY_IMAGE);
 
         assertEquals("{\"response\" : \"file uploaded successfully : healthy.png\"}", result);
     }
 
     @Test
-    @DisplayName("Obtenemos una imagen por su id")
+    @DisplayName("Descargamos una imagen por su id")
     public void DownloadImage_ValidId_ReturnsCorrectImagen() throws JsonProcessingException {
-
         createMedico();
         createPaciente();
-        createImagen();
+        createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/1")
                 .exchange()
@@ -138,7 +136,7 @@ public class ImagenControllerIT extends AbstractIntegration {
     public void DeleteCuenta_ValidId_ReturnsNoContent() {
         createMedico();
         createPaciente();
-        createImagen();
+        createImagen(HEALTHY_IMAGE);
 
         client.delete()
                 .uri("/imagen/1")
@@ -151,14 +149,16 @@ public class ImagenControllerIT extends AbstractIntegration {
     public void GetImagenes_ValidId_ReturnsOneImagen() {
         createMedico();
         createPaciente();
-        createImagen();
+        // Introducimos dos imagenes para nuestro paciente
+        createImagen(HEALTHY_IMAGE);
+        createImagen(UNHEALTHY_IMAGE);
 
         client.get().uri("/imagen/paciente/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
                 .expectHeader().valueEquals("Content-Type", "application/json")
-                .expectBody().jsonPath("$", hasSize(1));
+                .expectBody().jsonPath("$", hasSize(2));
 
     }
 
@@ -167,7 +167,7 @@ public class ImagenControllerIT extends AbstractIntegration {
     public void GetImagen_ValidId_ReturnsCorrectImagen(){
         createMedico();
         createPaciente();
-        createImagen();
+        createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/info/1")
                 .exchange()
@@ -183,11 +183,11 @@ public class ImagenControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("Obtenemos prediccion con resultado positivo") // CAMBIAR EL NOMBRE
-    public void GetImagenPrediction_ValidId_ReturnsPrediction(){
+    @DisplayName("Obtenemos prediccion de cancer con resultado negativo")
+    public void GetImagenPrediction_ValidId_ReturnsNotCancer(){
         createMedico();
         createPaciente();
-        createImagen();
+        createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<String> responseBody = client.get()
                 .uri("/imagen/predict/1")
@@ -197,6 +197,26 @@ public class ImagenControllerIT extends AbstractIntegration {
 
         String result = responseBody.getResponseBody().blockFirst();
         String expected = "Not cancer (label 0)";
+
+        assertTrue(result.contains(expected));
+
+    }
+
+    @Test
+    @DisplayName("Obtenemos prediccion de cancer con resultado positivo")
+    public void GetImagenPrediction_ValidId_ReturnsCancer(){
+        createMedico();
+        createPaciente();
+        createImagen(UNHEALTHY_IMAGE);
+
+        FluxExchangeResult<String> responseBody = client.get()
+                .uri("/imagen/predict/1")
+                .exchange()
+                .expectStatus().is2xxSuccessful()
+                .returnResult(String.class);
+
+        String result = responseBody.getResponseBody().blockFirst();
+        String expected = "Cancer (label 1)";
 
         assertTrue(result.contains(expected));
 
