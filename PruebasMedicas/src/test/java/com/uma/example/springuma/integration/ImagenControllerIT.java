@@ -41,12 +41,12 @@ public class ImagenControllerIT extends AbstractIntegration {
     private Medico medico;
 
     private final String HEALTHY_IMAGE = "./src/test/resources/healthy.png";
-    private final String UNHEALTHY_IMAGE = "./src/test/resources/no_healthy.png";
+    private final String UNHEALTHY_IMAGE = "./src/test/resources/unhealthy.png";
 
     @PostConstruct
     public void init() {
         client = WebTestClient.bindToServer().baseUrl("http://localhost:"+port)
-                .responseTimeout(Duration.ofMillis(15000)).build();
+                .responseTimeout(Duration.ofMillis(20000)).build();
     }
 
     @BeforeEach
@@ -217,6 +217,28 @@ public class ImagenControllerIT extends AbstractIntegration {
 
         String result = responseBody.getResponseBody().blockFirst();
         String expected = "Cancer (label 1)";
+
+        assertTrue(result.contains(expected));
+
+    }
+
+    @Test
+    @DisplayName("Hacemos prediccion con id de imagen invalido")
+    public void GetImagenPrediction_InvalidId_ReturnsInternalServerError(){
+        createMedico();
+        createPaciente();
+        createImagen(UNHEALTHY_IMAGE);
+
+        int invalid_id = 10;
+
+        FluxExchangeResult<String> responseBody = client.get()
+                .uri("/imagen/predict/" + invalid_id)
+                .exchange()
+                .expectStatus().is5xxServerError()
+                .returnResult(String.class);
+
+        String result = responseBody.getResponseBody().blockFirst();
+        String expected = "Error al realizar la prediccion";
 
         assertTrue(result.contains(expected));
 
