@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) // para ignorar el serializador al devolver un objeto cuenta
-public class Paciente implements Serializable{
+public class    Paciente implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -20,6 +20,7 @@ import com.uma.example.springuma.model.Paciente;
 
 @RestController
 public class ImagenController {
+
     @Autowired
     private ImagenService imagenService;
 
