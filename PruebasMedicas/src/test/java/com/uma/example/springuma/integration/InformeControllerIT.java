@@ -1,3 +1,6 @@
+/*
+    Autores: Adrián Torremocha Doblas y Ezequiel Sánchez García
+ */
 package com.uma.example.springuma.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,6 +68,11 @@ public class InformeControllerIT extends AbstractIntegration {
         paciente.setEdad(18);
         paciente.setMedico(medico);
         paciente.setCita("cita");
+
+        // Insertamos un medico, un paciente y una imagen antes de cada test
+        createMedico();
+        createPaciente();
+        createImagen(HEALTHY_IMAGE);
     }
 
     private void createMedico() {
@@ -110,9 +118,6 @@ public class InformeControllerIT extends AbstractIntegration {
     @Test
     @DisplayName("Crear un nuevo informe y recuperarlo con una get request")
     public void GetInforme_NuevoInforme_DevuelveInforme() throws Exception{
-        createMedico();
-        createPaciente();
-        createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/info/1")
                 .exchange()
@@ -147,9 +152,6 @@ public class InformeControllerIT extends AbstractIntegration {
     @Test
     @DisplayName("Recuperar la lista de informes asociados a una imagen")
     public void GetInformes_2NuevosInformes_DevuelveInformes() throws Exception{
-        createMedico();
-        createPaciente();
-        createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/info/1")
                 .exchange()
@@ -197,10 +199,7 @@ public class InformeControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Crear un nuevo informe y eliminarlo")
-    public void DeleteInforme_NuevoInforme_SeElimina(){
-        createMedico();
-        createPaciente();
-        createImagen(HEALTHY_IMAGE);
+    public void DeleteInforme_NuevoInforme_SeEliminaCorrectamente(){
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/info/1")
                 .exchange()

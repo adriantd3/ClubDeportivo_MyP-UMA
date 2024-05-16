@@ -1,3 +1,6 @@
+/*
+    Autores: Adrián Torremocha Doblas y Ezequiel Sánchez García
+ */
 package com.uma.example.springuma.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +36,9 @@ public class MedicoControllerIT extends AbstractIntegration {
         medico.setNombre("Pedro");
         medico.setEspecialidad("dermatologo");
         medico.setId(1);
+
+        // Insertamos el medico antes de cada uno de los tests
+        createMedico();
     }
 
     private void createMedico() throws Exception {
@@ -43,11 +49,9 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("create a new medico and obtain it by a get request")
-    public void SaveMedico_NonExistingMedico_isObtainedWithGet() throws Exception {
+    @DisplayName("crear un nuevo medico y obtenerlo con una peticion por get")
+    public void SaveMedico_NuevoMedico_esObtenidoPorGet() throws Exception {
 
-        // Creamos el medico
-        createMedico();
         // Comprobamos que se ha creado correctamente
         this.mockMvc.perform(get("/medico/" + medico.getId()))
                 .andDo(print())
@@ -61,10 +65,8 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("update an existing medico")
-    public void UpdateMedico_ExistingMedico_isObtainedWithGet() throws Exception {
-
-        createMedico();
+    @DisplayName("actualizar un medico existente")
+    public void UpdateMedico_MedicoExistente_esActualizadoCorrectamente() throws Exception {
 
         // Actualizamos el medico
         medico.setDni("87654321Y");
@@ -90,10 +92,8 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("delete an existing medico")
-    public void DeleteMedico_ExistingMedico_isNotObtainedWithGet() throws Exception {
-        // Creamos el medico
-        createMedico();
+    @DisplayName("borrar un medico existente")
+    public void DeleteMedico_MedicoExistente_esEliminadoCorrectamente() throws Exception {
 
         // Eliminamos el medico
         this.mockMvc.perform(delete("/medico/" + medico.getId()))
@@ -106,10 +106,8 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("delete a non-existing medico")
-    public void DeleteMedico_NonExistingMedico_isInternalServerError() throws Exception {
-        // Creamos el medico
-        createMedico();
+    @DisplayName("borrar un medico no existente devuelve internal server error")
+    public void DeleteMedico_MedicoNoExistente_ReturnsInternalServerError() throws Exception {
 
         long invalid_id = 10;
 
@@ -120,10 +118,8 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("retrieve an existing medico by their DNI")
-    public void GetMedicoByDni_ExistingMedico_isObtainedWithGet() throws Exception {
-
-        createMedico();
+    @DisplayName("obtener un medico existente por su DNI")
+    public void GetMedicoByDni_MedicoExistente_esObtenidoPorGet() throws Exception {
 
         this.mockMvc.perform(get("/medico/dni/" + medico.getDni()))
                 .andDo(print())
@@ -136,8 +132,8 @@ public class MedicoControllerIT extends AbstractIntegration {
     }
 
     @Test
-    @DisplayName("retrieve a non-existing medico by their DNI")
-    public void GetMedicoByDni_NonExistingMedico_isNotFound() throws Exception {
+    @DisplayName("obtener un medico no existente por su DNI devuelve not found")
+    public void GetMedicoByDni_MedicoNoExistente_ReturnsNotFound() throws Exception {
 
         String non_existing_dni = "1111111K";
 

@@ -1,3 +1,6 @@
+/*
+    Autores: Adrián Torremocha Doblas y Ezequiel Sánchez García
+ */
 package com.uma.example.springuma.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -66,6 +69,10 @@ public class ImagenControllerIT extends AbstractIntegration {
         paciente.setEdad(18);
         paciente.setMedico(medico);
         paciente.setCita("cita");
+
+        // Insertamos un medico y un paciente antes de cada uno de los tests
+        createMedico();
+        createPaciente();
     }
 
     private void createMedico() {
@@ -110,9 +117,7 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Subimos una nueva imagen")
-    public void UploadImage_ValidImage_ReturnsGoodResponse() {
-        createMedico();
-        createPaciente();
+    public void UploadImage_ImagenValida_ReturnsGoodResponse() {
 
         String result = createImagen(HEALTHY_IMAGE);
 
@@ -121,9 +126,7 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Descargamos una imagen por su id")
-    public void DownloadImage_ValidId_ReturnsCorrectImagen() throws JsonProcessingException {
-        createMedico();
-        createPaciente();
+    public void DownloadImage_IdImagenValido_DevuelveImagenCorrecta() throws JsonProcessingException {
         createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/1")
@@ -133,9 +136,7 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Eliminamos una imagen por su id")
-    public void DeleteCuenta_ValidId_ReturnsNoContent() {
-        createMedico();
-        createPaciente();
+    public void DeleteCuenta_IdImagenValido_ReturnsNoContent() {
         createImagen(HEALTHY_IMAGE);
 
         client.delete()
@@ -146,9 +147,8 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Obtenemos las imagenes de un paciente")
-    public void GetImagenes_ValidId_ReturnsOneImagen() {
-        createMedico();
-        createPaciente();
+    public void GetImagenes_IdPacienteValido_DevuelveUnaImagen() {
+
         // Introducimos dos imagenes para nuestro paciente
         createImagen(HEALTHY_IMAGE);
         createImagen(UNHEALTHY_IMAGE);
@@ -164,9 +164,8 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Obtenemos una imagen por su id")
-    public void GetImagen_ValidId_ReturnsCorrectImagen(){
-        createMedico();
-        createPaciente();
+    public void GetImagen_IdImagenValido_DevuelveImagenCorrecta(){
+
         createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<Imagen> result = client.get().uri("/imagen/info/1")
@@ -184,9 +183,8 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Obtenemos prediccion de cancer con resultado negativo")
-    public void GetImagenPrediction_ValidId_ReturnsNotCancer(){
-        createMedico();
-        createPaciente();
+    public void GetImagenPrediction_IdImagenValida_ReturnsNotCancer(){
+
         createImagen(HEALTHY_IMAGE);
 
         FluxExchangeResult<String> responseBody = client.get()
@@ -204,9 +202,8 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Obtenemos prediccion de cancer con resultado positivo")
-    public void GetImagenPrediction_ValidId_ReturnsCancer(){
-        createMedico();
-        createPaciente();
+    public void GetImagenPrediction_IdImagenValida_ReturnsCancer(){
+
         createImagen(UNHEALTHY_IMAGE);
 
         FluxExchangeResult<String> responseBody = client.get()
@@ -224,9 +221,8 @@ public class ImagenControllerIT extends AbstractIntegration {
 
     @Test
     @DisplayName("Hacemos prediccion con id de imagen invalido")
-    public void GetImagenPrediction_InvalidId_ReturnsInternalServerError(){
-        createMedico();
-        createPaciente();
+    public void GetImagenPrediction_IdImagenInvalida_ReturnsInternalServerError(){
+
         createImagen(UNHEALTHY_IMAGE);
 
         int invalid_id = 10;
