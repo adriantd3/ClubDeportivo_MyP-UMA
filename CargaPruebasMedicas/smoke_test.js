@@ -1,3 +1,4 @@
+// Realizado por Adrián Torremocha Doblas y Ezequiel Sánchez García
 import http from 'k6/http';
 import { sleep } from 'k6';
 import { check } from 'k6';
