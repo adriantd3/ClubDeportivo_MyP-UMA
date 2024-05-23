@@ -26,20 +26,24 @@ export default async function () {
     // Localizamos el boton de iniciar sesion
     const submitButton = page.locator('button[name="login"]');
 
+    sleep(2);
+
     // Escribimos la informacion del medico con el que haremos el login
     page.locator('input[name="nombre"]').clear()
     page.locator('input[name="DNI"]').clear()
     page.locator('input[name="nombre"]').type('Pedro');
     page.locator('input[name="DNI"]').type('1');
-    sleep(1);
+    
+    sleep(2);
 
     // Pulsamos el boton de iniciar sesion
     await Promise.all([page.waitForNavigation(), submitButton.click()]);
-    // Esperamos unos cinco segundos
+    
     sleep(3);
+    
     // Comprobamos que nos redirige al listado de pacientes del medico
     check(page, {
-      'header': p => p.locator('h2').textContent() == 'Listado de pacientes',
+      'Redireccion al listado de pacientes (tras hacer el login)': p => p.locator('h2').textContent() == 'Listado de pacientes',
     });
 
   } finally {
