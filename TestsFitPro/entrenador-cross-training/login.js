@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(2);
 
-    //Login
+    // Login del entrenador
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();

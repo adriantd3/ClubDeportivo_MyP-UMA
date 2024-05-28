@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(1);
 
-    //Login
+    // Login del entrenador
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();
@@ -70,12 +70,6 @@ export default async function () {
     check(page, {
         'Numero de rutinas asignadas al cliente' : p => p.$$("table tbody tr").length == numeroDeRutinas
     })
-
-    /*
-    check(page, {
-        'Primera rutina': p => p.$$("table tbody tr")[numeroDeRutinas-2].$('td[name="nombre"]').textContent().trim() == 'Rutina 1',
-        'Segunda rutina': p => p.$$("table tbody tr")[numeroDeRutinas-1].$('td[name="nombre"]').textContent().trim() == 'PRUEBA',
-      });*/
 
   } finally {
     page.close();

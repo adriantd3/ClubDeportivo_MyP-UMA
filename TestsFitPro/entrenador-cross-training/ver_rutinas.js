@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(1);
 
-    //Login
+    // Login del entrenador
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();
@@ -40,7 +40,7 @@ export default async function () {
         'Redireccion a página home': p => p.locator('h1').textContent() == 'Bienvenida, María',
       });
 
-    sleep(2);
+    sleep(1);
 
     //Localizamos el boton de rutinas
     const rutinasButton = page.locator('button[name="rutinas"]');

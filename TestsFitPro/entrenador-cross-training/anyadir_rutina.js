@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(1);
 
-    //Login
+    // Login del entrenador
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();
@@ -59,31 +59,25 @@ export default async function () {
     // Añadimos una rutina
     const numeroRutinas = page.$$("table tbody tr").length;
 
-    // Pulsamos el boton de añadir rutina para que nos salte un pop up en el que insertaremos el nombre 
+    // Pulsamos el botón de añadir rutina para que nos salte un pop up en el que insertaremos el nombre
     // de la nueva rutina
-    const anyadirRutinaButton = page.locator('button[name="anyadir_rutina"]');
-    await Promise.all([anyadirRutinaButton.click(), page.waitForNavigation()]);
+    await page.locator('button[name="anyadir_rutina"]').click();
 
-    sleep(1);
-
-    /* NO FUNCIONA DE MOMENTO
+    sleep(2);
 
     // Insertamos el nombre de la rutina
-    const nombreRutinaInput = page.locator('#nuevaRutina > div > div > div.modal-body > form > input[type="text"]');
-    await nombreRutinaInput.fill('RUTINA DE PRUEBA');
+    await page.locator('#nuevaRutina > div > div > div.modal-body > form > input[type="text"]').fill('RUTINA DE PRUEBA');
 
+    // Pulsamos el boton de guardar rutina
+    const guardarRutinaButton = page.locator('button[name="guardar_rutina"]')
+    await Promise.all([ guardarRutinaButton.click(), page.waitForNavigation(),]);
 
-    const guardarRutinaButton = page.locator('button[name="guardar_rutina"]');
-    await Promise.all([guardarRutinaButton.click(), page.waitForNavigation()]);
-
-    sleep(1);
+    sleep(2);
     
     // Comprobamos que le numero de rutinas haya aumentado
     check(page, {
         'Se aumenta el numero de rutinas': p => p.$$("table tbody tr").length == numeroRutinas+1,
       });
-
-      */
 
 
   } finally {

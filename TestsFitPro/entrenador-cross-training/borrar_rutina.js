@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(1);
 
-    //Login
+    // Login del entrenador
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();
@@ -43,10 +43,10 @@ export default async function () {
     sleep(2);
 
     //Localizamos el boton de rutinas
-    const clientesButton = page.locator('button[name="rutinas"]');
+    const rutinasButton = page.locator('button[name="rutinas"]');
 
     // Pulsamos el boton de clientes
-    await Promise.all([clientesButton.click(), page.waitForNavigation()]);
+    await Promise.all([rutinasButtonButton.click(), page.waitForNavigation()]);
 
     sleep(2);
 
