@@ -53,22 +53,26 @@ export default async function () {
     nuevoEntrenamientoButton.click();
     await page.waitForNavigation();
 
-    //Pulsar boton de comenzar nuevo entrenamiento
+    //Pulsar boton de comenzar nuevo entrenamiento para previsualizar la sesion
     const comenzarEntrenamientoButton = page.locator('button[name="comenzar_entrenamiento"]');
     comenzarEntrenamientoButton.click();
     await page.waitForNavigation();
 
-    const numeroDeSeries = page.$$("table#TableEjer1 tbody tr").length;
+    //Obtenemos el section del primer ejercicio
+    const ejercicio = page.$("section.ejercicio1");
 
-    const firstRow = page.$$("table#TableEjer1 tbody tr")[0];
-    const linkBorrarSerie= firstRow.$("button[name='borrar']");
+    //Calculamos el numero de series y obtenemos el boton de borrar
+    const numeroDeSeries = ejercicio.$$("table tbody tr").length;
+    const borrarButton = ejercicio.$$("table tbody tr")[0].$("button[name='borrar']");
 
-    linkBorrarSerie.click();
+    //Pulsamos el boton de borrar
+    borrarButton.click();
     await page.waitForNavigation();
+    sleep(3);
 
-    //Comprobar que se ha creado un nuevo desempeño
+    //Comprobar que se ha eliminado una serie
     check(page, {
-      "Se ha eliminado una serie": p => p.$$("table#TableEjer1 tbody tr").length == numeroDeSeries - 1,
+      "Se decrementa el número de series": p => p.$("section.ejercicio1").$$("table tbody tr").length === numeroDeSeries - 1,
     });
 
   } finally {

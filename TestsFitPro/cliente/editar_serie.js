@@ -48,7 +48,7 @@ export default async function () {
     sesionLink.click();
     await page.waitForNavigation();
 
-    //Pulsar boton de nuevo entrenamiento
+    //Pulsar boton de nuevo entrenamiento para previsualizar la sesion
     const nuevoEntrenamientoButton = page.locator('button[name="nuevo_entrenamiento"]');
     nuevoEntrenamientoButton.click();
     await page.waitForNavigation();
@@ -58,24 +58,34 @@ export default async function () {
     comenzarEntrenamientoButton.click();
     await page.waitForNavigation();
 
-    const numeroDeSeries = page.$$("table#TableEjer1 tr").length;
-    const linkNuevaSerie= page.locator('form#NuevaSerieEjer1 button[name="nueva_serie"]');
-    linkNuevaSerie.click();
+    //Obtenemos el section del primer ejercicio
+    const ejercicio = page.$("section.ejercicio1");
+
+    //Calculamos el número de series y obtenemos el botón de editar
+    const numeroDeSeries = ejercicio.$$("table tbody tr").length;
+    const editarButton = ejercicio.$$("table tbody tr")[0].$("button[name='editar']");
+
+    //Pulsar boton de editar
+    editarButton.click();
     await page.waitForNavigation();
 
+    //Modificar los valores de la serie
     const guardarButton = page.locator('button[name="guardar"]');
-    const serieFields = page.$$('input');
-    serieFields[0].clear;
-    serieFields[1].clear;
-    serieFields[0].type("10");
-    serieFields[1].type("15");
-    sleep(2);
+    const input1 = page.locator('input[id="input1"]');
+    const input2 = page.locator('input[id="input2"]');
 
+    input1.clear();
+    input2.clear();
+    input1.type("10");
+    input2.type("15");
+    sleep(3);
+
+    //Pulsamos el boton de guardar
     await Promise.all([guardarButton.click(), page.waitForNavigation()]);
 
     //Comprobar que se ha creado un nuevo desempeño
     check(page, {
-      "Se ha creado la nueva serie": p => p.$$("table#TableEjer1 tr").length == numeroDeSeries + 1,
+      "Se mantiene el número de series": p => p.$("section.ejercicio1").$$("table tbody tr").length == numeroDeSeries,
     });
 
   } finally {
