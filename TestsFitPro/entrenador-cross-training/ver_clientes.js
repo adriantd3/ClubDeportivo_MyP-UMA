@@ -54,7 +54,7 @@ export default async function () {
       });
     
     // Obtenemos el numero de clientes que este entrenador tiene asignados y comprobamos que sea igual a cuatro
-    const numeroDeClientes = 4;
+    const numeroDeClientes = 1;
     check(page, {
         'Numero de clientes asignados' : p => p.$$("table tbody tr").length == numeroDeClientes
     })

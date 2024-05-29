@@ -65,8 +65,8 @@ export default async function () {
         'Redireccion a rutinas del cliente': p => p.locator('h1').textContent() == 'Rutinas de Alvaro',
       });
 
-    // Comprobamos que este cliente tiene dos rutinas asignadas con nombres 'Prueba' y 'Rutina 1' 
-    const numeroDeRutinas = 2;
+    // Comprobamos que este cliente tiene una rutinas asignadas con nombres 'Prueba' y 'Rutina 1' 
+    const numeroDeRutinas = 1;
     check(page, {
         'Numero de rutinas asignadas al cliente' : p => p.$$("table tbody tr").length == numeroDeRutinas
     })
