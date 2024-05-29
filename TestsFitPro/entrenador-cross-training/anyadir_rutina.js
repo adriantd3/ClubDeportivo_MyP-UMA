@@ -45,7 +45,7 @@ export default async function () {
     //Localizamos el boton de rutinas
     const rutinasButton = page.locator('button[name="rutinas"]');
 
-    // Pulsamos el boton de clientes
+    // Pulsamos el boton de rutinas
     await Promise.all([rutinasButton.click(), page.waitForNavigation()]);
 
     sleep(1);
@@ -56,7 +56,7 @@ export default async function () {
       });
 
     
-    // Añadimos una rutina
+    // Obtenemos el numero de rutinas actuales
     const numeroRutinas = page.$$("table tbody tr").length;
 
     // Pulsamos el botón de añadir rutina para que nos salte un pop up en el que insertaremos el nombre

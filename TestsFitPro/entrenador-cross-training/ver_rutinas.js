@@ -45,7 +45,7 @@ export default async function () {
     //Localizamos el boton de rutinas
     const rutinasButton = page.locator('button[name="rutinas"]');
 
-    // Pulsamos el boton de clientes
+    // Pulsamos el boton de rutinas
     await Promise.all([rutinasButton.click(), page.waitForNavigation()]);
 
     // Comprobamos que estamos en la pagina de rutinas del entrenador

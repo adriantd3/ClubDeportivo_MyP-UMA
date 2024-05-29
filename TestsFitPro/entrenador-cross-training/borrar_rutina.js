@@ -45,8 +45,8 @@ export default async function () {
     //Localizamos el boton de rutinas
     const rutinasButton = page.locator('button[name="rutinas"]');
 
-    // Pulsamos el boton de clientes
-    await Promise.all([rutinasButtonButton.click(), page.waitForNavigation()]);
+    // Pulsamos el boton de rutinas
+    await Promise.all([rutinasButton.click(), page.waitForNavigation()]);
 
     sleep(2);
 
@@ -55,14 +55,16 @@ export default async function () {
         'Redireccion a página rutinas': p => p.locator('h1').textContent() == 'Rutinas',
       });
     
-    // Borramos una rutina
+    // Obtenemos el numero de rutinas actuales
     const numeroRutinas = page.$$("table tbody tr").length;
 
+    // Borramos una rutina
     const borrarButton = page.$$('table tbody tr')[0].$('form button[name="borrar"]');
     await Promise.all([borrarButton.click(), page.waitForNavigation()]);
 
     sleep(2);
 
+    // Comprobamos que el numero actual de rutinas se ha decrementado
     check(page, {
         'Se decrementa el numero de rutinas': p => p.$$("table tbody tr").length == numeroRutinas-1,
       });

@@ -42,10 +42,10 @@ export default async function () {
 
     sleep(1);
 
-    //Localizamos el boton de rutinas
+    //Localizamos el boton de sesiones
     const sesionesButton = page.locator('button[name="sesiones"]');
 
-    // Pulsamos el boton de clientes
+    // Pulsamos el boton de sesiones
     await Promise.all([sesionesButton.click(), page.waitForNavigation()]);
 
     // Comprobamos que estamos en la pagina de sesiones del entrenador
@@ -69,6 +69,7 @@ export default async function () {
         'Redireccion a editar ultima sesion': p => p.locator('h1').textContent().trim().includes(nombreSesion),
       });
 
+    // Pulsamos el boton de añadir ejercicio
     const anyadirEjercicioButton = page.locator('button[name="anyadir_ejercicio"]');
     await Promise.all([anyadirEjercicioButton.click(), page.waitForNavigation()]);
 

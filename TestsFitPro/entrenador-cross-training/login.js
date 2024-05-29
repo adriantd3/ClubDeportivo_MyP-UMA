@@ -42,8 +42,6 @@ export default async function () {
 
     sleep(2);
 
-
-
   } finally {
     page.close();
   }

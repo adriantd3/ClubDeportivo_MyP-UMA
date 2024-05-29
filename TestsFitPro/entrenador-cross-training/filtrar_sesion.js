@@ -42,10 +42,10 @@ export default async function () {
 
     sleep(1);
 
-    //Localizamos el boton de rutinas
+    //Localizamos el boton de sesiones
     const sesionesButton = page.locator('button[name="sesiones"]');
 
-    // Pulsamos el boton de clientes
+    // Pulsamos el boton de sesiones
     await Promise.all([sesionesButton.click(), page.waitForNavigation()]);
 
     sleep(1);
