@@ -49,16 +49,13 @@ export default async function () {
     await page.waitForNavigation();
 
     //Acceder al primer desempeño que tenga de estado "Terminado"
-    const desempenoLinks = page.$$("a");
-    const desempenoLink = desempenoLinks.find( async (link) => {
-      return link.evaluate((node) => node.textContent).includes("Terminado");
-    });
-    desempenoLink.click();
-
+    const desempenyoLink = page.locator("a#EntT1");
+    desempenyoLink.click();
     await page.waitForNavigation();
 
+    //Comprobar que se han cargado las tablas de resultados
     check(page, {
-      "Numero de tables": p => p.$$("table").length == 2,
+      "Numero de tables": p => p.$$("section#table-container").length == 2,
     });
 
   } finally {
