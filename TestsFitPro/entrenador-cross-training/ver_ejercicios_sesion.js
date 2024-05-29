@@ -25,7 +25,7 @@ export default async function () {
 
     sleep(1);
 
-    // Login del entrenador
+    //Login
     const submitButton = page.locator('button[name="login"]');
     page.locator('input[name="mail"]').clear();
     page.locator('input[name="password"]').clear();
@@ -40,36 +40,38 @@ export default async function () {
         'Redireccion a página home': p => p.locator('h1').textContent() == 'Bienvenida, María',
       });
 
-    sleep(2);
+    sleep(1);
 
-    //Localizamos el boton de clientes
-    const clientesButton = page.locator('button[name="clientes"]');
+    //Localizamos el boton de rutinas
+    const sesionesButton = page.locator('button[name="sesiones"]');
 
     // Pulsamos el boton de clientes
-    await Promise.all([clientesButton.click(), page.waitForNavigation()]);
+    await Promise.all([sesionesButton.click(), page.waitForNavigation()]);
 
-    // Comprobamos que estamos en la pagina de clientes
+    // Comprobamos que estamos en la pagina de sesiones del entrenador
     check(page, {
-        'Redireccion a página clientes': p => p.locator('h1').textContent() == 'Clientes',
+        'Redireccion a página sesiones': p => p.locator('h1').textContent() == 'Sesiones',
       });
     
+    // Accedemos a la ultima sesion de la tabla
+    const nombreSesion = page.$('table tbody tr:last-child td[name="nombre_sesion"]').textContent().trim();
+    console.log(nombreSesion);
+
+    const ultimaSesionButton = page.$('table tbody tr:last-child button[name="editar"]');
+    await Promise.all([ultimaSesionButton.click(), page.waitForNavigation()]);
+
     sleep(2);
 
-    // Localizamos el boton para ver las rutinas del primer cliente
-    const rutinasClienteButton = page.$('table tbody tr:nth-child(1) td:nth-child(3) button');
-    await Promise.all([rutinasClienteButton.click(), page.waitForNavigation()]);
-
-    sleep(2);
-    
+    // Comprobamos que estamos en la pagina de editar la sesion
     check(page, {
-        'Redireccion a rutinas del cliente': p => p.locator('h1').textContent() == 'Rutinas de Alvaro',
+        'Redireccion a editar ultima sesion': p => p.locator('h1').textContent().trim().includes(nombreSesion),
       });
 
-    // Comprobamos que este cliente tiene dos rutinas asignadas con nombres 'Prueba' y 'Rutina 1' 
-    const numeroDeRutinas = 2;
+    // Comprobamos el numero de ejercicios que tiene la sesion
+    const numeroEjercicios = 2;
     check(page, {
-        'Numero de rutinas asignadas al cliente' : p => p.$$("table tbody tr").length == numeroDeRutinas
-    })
+      'Numero de ejercicios de la sesion': p => p.$$('table[name="tabla_ejercicio"]').length == numeroEjercicios  , 
+    });
 
   } finally {
     page.close();

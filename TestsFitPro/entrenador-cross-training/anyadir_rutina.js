@@ -66,7 +66,7 @@ export default async function () {
     sleep(2);
 
     // Insertamos el nombre de la rutina
-    await page.locator('#nuevaRutina > div > div > div.modal-body > form > input[type="text"]').fill('RUTINA DE PRUEBA');
+    await page.locator('#nuevaRutina input[type="text"]').fill('RUTINA DE PRUEBA');
 
     // Pulsamos el boton de guardar rutina
     const guardarRutinaButton = page.locator('button[name="guardar_rutina"]')
@@ -74,7 +74,7 @@ export default async function () {
 
     sleep(2);
     
-    // Comprobamos que le numero de rutinas haya aumentado
+    // Comprobamos que el numero de rutinas haya aumentado
     check(page, {
         'Se aumenta el numero de rutinas': p => p.$$("table tbody tr").length == numeroRutinas+1,
       });
