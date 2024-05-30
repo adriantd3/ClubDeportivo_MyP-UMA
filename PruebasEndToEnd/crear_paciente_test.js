@@ -1,3 +1,4 @@
+//Realizado por Adrián Torremocha Doblas y Ezequiel Sánchez García
 import { browser } from 'k6/experimental/browser';
 import { check, sleep } from 'k6';
 
